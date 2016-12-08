@@ -50,3 +50,7 @@ octave-workspace
 *.exe
 *.out
 *.app
+
+# Output files from GPTIPS 
+
+*.htm
