@@ -6,7 +6,7 @@
 %   behavior for each mode - f_k (u_n)
 %   variance for each mode - sigma^2_k
 
-function [f,var] = csr(u,y,K)
+function [f,var] = runEM(obj,u,y,K)
 
 % initialize random membership values
 
