@@ -1,13 +1,12 @@
-function y = csr()
-
 % top level file for clustered symbolic regression
-
 % input:
 %   unclustered input-output data - u_n , y_n
 %   the number of subfunctions - K
 % output: 
 %   behavior for each mode - f_k (u_n)
 %   variance for each mode - sigma^2_k
+
+function [f,var] = csr(u,y,K)
 
 % initialize random membership values
 
