@@ -1,3 +1,5 @@
+function y = csr()
+
 % top level file for clustered symbolic regression
 
 % input:
@@ -43,3 +45,5 @@
 
 
 % return behaviors f_k and variances sigma^2_k
+
+end
