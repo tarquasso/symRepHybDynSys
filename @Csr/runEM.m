@@ -8,6 +8,11 @@
 
 function [f,var] = runEM(obj,u,y,K)
 
+% making sure we don't run the EM algorithm multiple times at the same time
+errorMsg = 'You cannot initialize the EM-algorithm twice! Aborting';
+assert(obj.runningEM == false,errorMsg);
+obj.runningEM = true;
+
 % initialize random membership values
 
 % for each behavior in K modes :
@@ -44,5 +49,9 @@ function [f,var] = runEM(obj,u,y,K)
 
 
 % return behaviors f_k and variances sigma^2_k
+
+
+% algorithm finished
+obj.runningEM = false;
 
 end

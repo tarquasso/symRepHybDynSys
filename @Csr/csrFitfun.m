@@ -1,4 +1,4 @@
-function [fitness,gp,theta,ypredtrain,fitnessTest,ypredtest,pvals,r2train,r2test,r2val,geneOutputs,geneOutputsTest,geneOutputsVal]=csr_fitfun(evalstr,gp)
+function [fitness,gp,theta,ypredtrain,fitnessTest,ypredtest,pvals,r2train,r2test,r2val,geneOutputs,geneOutputsTest,geneOutputsVal]=csrFitfun(evalstr,gp)
 %REGRESSMULTI_FITFUN Fitness function for multigene symbolic regression.
 %
 %   This is the default fitness function for multigene symbolic regression
@@ -158,9 +158,14 @@ end
 %calc. prediction of full training data set using the estimated weights
 ypredtrain = geneOutputs * theta;
 
-%calculate RMS prediction error (fitness)
+%calculate weighted, mean logarithmic error
+weights = Csr.getInstance.getWeightsTrain();
 err = gp.userdata.ytrain - ypredtrain;
-fitness = sqrt(((err'*err)/numData));
+fitness = 0;
+for i=1:size(err,1) % go through all training examples
+    fitness = fitness - weights(i)*log(1+norm(err(i,:)));
+end
+fitness = fitness/sum(weights);
 
 %--below is for post-run evaluation of models, it is not used during a GPTIPS run--
 
@@ -190,7 +195,13 @@ if gp.state.run_completed
         end
         
         ypredval = geneOutputsVal*theta; %create the prediction  on the validation data
-        fitness_val = sqrt(mean((gp.userdata.yval - ypredval).^2));
+        weights = Csr.getInstance.getWeightsVal();
+        err = gp.userdata.yval - ypredval;
+        fitness_val = 0;
+        for i=1:size(err,1) % go through all training examples
+            fitness_val = fitness_val - weights(i)*log(1+norm(err(i,:)));
+        end
+        fitness_val = fitness_val/sum(weights);
         
         %compute r2 for validation data
         r2val = 1 - sum( (gp.userdata.yval - ypredval).^2 )/sum( (gp.userdata.yval - mean(gp.userdata.yval)).^2 );
@@ -221,7 +232,15 @@ if gp.state.run_completed
         end
         
         ypredtest = geneOutputsTest * theta; %create the prediction on the testing data
-        fitnessTest = sqrt(mean((gp.userdata.ytest - ypredtest).^2));
+
+        csr = Csr.getInstance;
+        weights = csr.getWeightsTest();
+        err = gp.userdata.ytest - ypredtest;
+        fitnessTest = 0;
+        for i=1:size(err,1) % go through all training examples
+            fitnessTest = fitnessTest - weights(i)*log(1+norm(err(i,:)));
+        end
+        fitnessTest = fitnessTest/sum(weights);
         
         %compute r2 for test data
         r2test = 1 - sum( (gp.userdata.ytest - ypredtest).^2 )/sum( (gp.userdata.ytest - mean(gp.userdata.ytest)).^2 );
