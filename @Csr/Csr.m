@@ -36,6 +36,8 @@ classdef (Sealed) Csr < handle
         aic = computeAIC(obj,gp,index)
         ecsr_k = kAbsError(obj,ypred,yactual,weights);
         var = computeVar(obj,k,gp,i_best,set);
+        yhat = predictData(obj,k,x);
+        gamma = computeGamma(obj,k,var,x,y);
     end
     
     properties (Access = private)

@@ -62,12 +62,15 @@ for k = 1:obj.K
 end
 
 % while convergence is not achieved :
+while true
     
     % for each behavior in K modes :
+    for k = 1:obj.K
+        obj.k_current = k;
         
         % # EXPECTATION STEP ##
         % for all the N data points :
-            % compute membership values - gamma_kn (Equation 4)
+        obj.gamma_train(k,:) = obj.computeGamma(k,obj.var_train,obj.x_train,obj.y_train);
         % #####################
 
         % # MAXIMIZATION STEP #
@@ -86,7 +89,9 @@ end
         % set behavior f k to solution with lowest AIC score in sr_solutions
         % set variance to corresponding value - σ 2 k (Equation 5)
         % #####################
-
+        
+    end
+end
 
 % return behaviors f_k and variances sigma^2_k
 % safe them internally as well
