@@ -71,23 +71,33 @@ while true
         % # EXPECTATION STEP ##
         % for all the N data points :
         obj.gamma_train(k,:) = obj.computeGamma(k,obj.var_train,obj.x_train,obj.y_train);
+        obj.gamma_val(k,:) = obj.computeGamma(k,obj.var_val,obj.x_val,obj.y_val);
+        obj.gamma_test(k,:) = obj.computeGamma(k,obj.var_test, obj.x_test,obj.y_test);
         % #####################
 
         % # MAXIMIZATION STEP #
         % sr_solutions = symbolic_regression(y_n = f_k(u_n),fitfunc)
-        % returns pareto set
+        [gp,index] = obj.symReg(); % returns pareto set
         
         % for each solution in sr_solutions :
-            % compute temporary membership values - gammahat_kn (Equation 4)
-            % compute temporary variance - sigmahat^2_k (Equation 5)
-            % compute global fitness using temporary values - E_csr (Equation 2)
+        aic = zeros(size(index));
+        aic(index == 0) = Inf;
+        for i = 1:size(index,1)
+            if index(i) == 0
+                continue;
+            end
+
             % compute AIC score using global fitness (Equation 8)
+            aic(i) = obj.computeAIC(gp,i,k);
+        end        
         
-        % NOTE @RKK: This is what they mean by 'greedy'. The steps below
-        % are within the for-loop for the K modes but not outside.
-        
-        % set behavior f k to solution with lowest AIC score in sr_solutions
-        % set variance to corresponding value - σ 2 k (Equation 5)
+        % set behavior f k to solution with lowest AIC score in sr_solution
+        [~,i_best] = min(aic);
+        f{k} = gpmodel2sym(gp,i_best);
+        % set variance for each behavior - sigma^2_k (Equation 5)
+        var_train(k) = obj.computeVar(k,gp,i_best,'train'); % on training set!!
+        var_test(k) = obj.computeVar(k,gp,i_best,'test');
+        var_test(k) = obj.computeVar(k,gp,i_best,'val');
         % #####################
         
     end

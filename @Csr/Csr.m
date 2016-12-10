@@ -33,11 +33,13 @@ classdef (Sealed) Csr < handle
     methods (Access = private)
         [gp,index_pareto] = symReg(obj)
         aic = computeLocalAIC(obj,gp,index,k)
-        aic = computeAIC(obj,gp,index)
+        aic = computeAIC(obj,gp,index,k)
         ecsr_k = kAbsError(obj,ypred,yactual,weights);
         var = computeVar(obj,k,gp,i_best,set);
+        var = computeVarHat(obj,k,gp,i,gammahat);
         yhat = predictData(obj,k,x);
         gamma = computeGamma(obj,k,var,x,y);
+        gamma = computeGammaHat(obj,k,var,x,y,yhatk);
     end
     
     properties (Access = private)
