@@ -62,7 +62,7 @@ for k = 1:obj.K
 end
 
 % while convergence is not achieved :
-while true
+while true % TODO: add convergence criterion
     
     % for each behavior in K modes :
     for k = 1:obj.K
