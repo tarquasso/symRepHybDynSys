@@ -34,6 +34,8 @@ classdef (Sealed) Csr < handle
         [gp,index_pareto] = symReg(obj)
         aic = computeLocalAIC(obj,gp,index,k)
         aic = computeAIC(obj,gp,index)
+        ecsr_k = kAbsError(obj,ypred,yactual,weights);
+        var = computeVar(obj,k,gp,i_best,set);
     end
     
     properties (Access = private)
@@ -50,8 +52,11 @@ classdef (Sealed) Csr < handle
         gamma_test;
         gamma_val;
         
+        
         f;
-        var;
+        var_train;
+        var_test;
+        var_val;
         
         runningEM;
         initiated;

@@ -6,7 +6,7 @@
 %   behavior for each mode - f_k (u_n)
 %   variance for each mode - sigma^2_k, var_k
 
-function [f,var] = runEM(obj)
+function [f,var_train] = runEM(obj)
 
 % making sure we don't run the EM algorithm without initialization
 errorMsg = 'You cannot start the EM-algorithm without initialization! Aborting';
@@ -18,9 +18,11 @@ obj.runningEM = true;
 
 % get some variables ready 
 f = cell(obj.K,1);
-var_k = zeros(obj.K,1);
+var_train = zeros(obj.K,1); % this is always on the training set
+var_test = var_train;
+var_val = var_train;
 
-% initialize random membership values
+% initialize and normalize random membership values
 obj.gamma_train = rand(obj.K,size(obj.y_train,1));
 obj.gamma_train = obj.gamma_train./repmat(sum(obj.gamma_train),obj.K,1);
 
@@ -48,23 +50,27 @@ for k = 1:obj.K
         end
     
     % set behavior f_k to solution with lowest local AIC score in sr_solutions
-    [aic_best,i_best] = min(aic);
+    [~,i_best] = min(aic);
     f{k} = gpmodel2sym(gp,i_best);
     
+    % set variance for each behavior - sigma^2_k (Equation 5)
+    var_train(k) = obj.computeVar(k,gp,i_best,'train'); % on training set!!
+    var_test(k) = obj.computeVar(k,gp,i_best,'test');
+    var_test(k) = obj.computeVar(k,gp,i_best,'val');
+    
+    
 end
-
-% set variance for each behavior - sigma^2_k (Equation 5)
 
 % while convergence is not achieved :
     
     % for each behavior in K modes :
         
-        % # EXPECTATION STEP
+        % # EXPECTATION STEP ##
         % for all the N data points :
             % compute membership values - gamma_kn (Equation 4)
-        % #####
+        % #####################
 
-        % # MAXIMIZATION STEP
+        % # MAXIMIZATION STEP #
         % sr_solutions = symbolic_regression(y_n = f_k(u_n),fitfunc)
         % returns pareto set
         
@@ -79,9 +85,15 @@ end
         
         % set behavior f k to solution with lowest AIC score in sr_solutions
         % set variance to corresponding value - σ 2 k (Equation 5)
+        % #####################
 
 
 % return behaviors f_k and variances sigma^2_k
+% safe them internally as well
+obj.f = f;
+obj.var_train = var_train;
+obj.var_val = var_val;
+obj.var_test = var_test;
 
 
 % algorithm finished
