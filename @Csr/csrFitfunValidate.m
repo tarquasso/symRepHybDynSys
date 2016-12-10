@@ -68,7 +68,7 @@ theta = gp.results.best.returnvalues;
 %calc. prediction of validation data set using the retreived weights
 ypredval = gene_outputs * theta;
 
-%calculate RMS prediction error on validation data
+%calculate prediction error on validation data
 weights = Csr.getInstance.getWeightsVal();
 err = y-ypredval;
 valfitness = 0;

@@ -22,10 +22,18 @@ classdef (Sealed) Csr < handle
     
     %other methods
     methods (Access = public)
-        [f,var] = runEM(obj,u,y,K)
+        [f,var] = runEM(obj,x,y,K)
         gamma_k = getWeightsTrain(obj,k)
         gamma_k = getWeightsTest(obj,k)
         gamma_k = getWeightsVal(obj,k)
+        [] = initiateCsr(obj,init) % initiate CSR class instance
+        gp = gpConfig(obj,gp)
+    end
+    
+    methods (Access = private)
+        [gp,index_pareto] = symReg(obj)
+        aic = computeLocalAIC(obj,gp,index,k)
+        aic = computeAIC(obj,gp,index)
     end
     
     properties (Access = private)
@@ -37,10 +45,16 @@ classdef (Sealed) Csr < handle
         y_val;
         
         k_current;
+        K;
         gamma_train;
         gamma_test;
         gamma_val;
+        
+        f;
+        var;
+        
         runningEM;
+        initiated;
     end
     
     methods (Static)
