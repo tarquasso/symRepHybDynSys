@@ -6,7 +6,7 @@
 %   behavior for each mode - f_k (u_n)
 %   variance for each mode - sigma^2_k
 
-function [f,var] = runEM(obj,u,y,K)
+function [f,var,gamma] = runEM(obj,u,y,K)
 
 % making sure we don't run the EM algorithm multiple times at the same time
 errorMsg = 'You cannot initialize the EM-algorithm twice! Aborting';
