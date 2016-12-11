@@ -113,5 +113,6 @@ obj.var_test = var_test;
 
 % algorithm finished
 obj.runningEM = false;
+obj.initiated = false;
 
 end
