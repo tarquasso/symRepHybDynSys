@@ -1,4 +1,4 @@
-function [gp,index_pareto] = symReg(obj)
+function [gp,index_pareto] = symReg(obj,k)
 
 % symbolic regression
 gp = rungp(@obj.gpConfig);
@@ -7,7 +7,7 @@ gp = rungp(@obj.gpConfig);
 pop = gp.runcontrol.pop_size;
 valfitness = zeros(pop,1);
 complexity = gp.fitness.complexity;
-weights = obj.getWeightsVal();
+weights = obj.getWeightsVal(k);
 
 for p=1:pop
     gpmodel = gpmodel2struct(gp,p);
@@ -15,10 +15,10 @@ for p=1:pop
     for i=1:size(err,1)
         valfitness(p) = valfitness(p) - weights(i)*log(1+norm(err(i,:)));
     end
-    valfitness(p) = valfitness(p)/sum(weights);
 end
+valfitness = valfitness./sum(weights);
 
-% find pareto front
+% find pareto front as 0,1-vector
 index_pareto = ndfsort_rank1([valfitness complexity]);
 
 end

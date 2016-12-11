@@ -39,7 +39,7 @@ function gp = gpConfig(obj,gp)
     gp.nodes.user_fcn = @obj.csrFitfunValidate;
     
     % variable names 
-    gp.nodes.inputs.names = {'z','dz','theta','dtheta'};
+    %gp.nodes.inputs.names = {'z','dz','theta','dtheta'};
     
     gp.nodes.functions.name = {'times','minus','plus','rdivide','square',...
         'mult3','add3','sqrt','cube','neg'};
