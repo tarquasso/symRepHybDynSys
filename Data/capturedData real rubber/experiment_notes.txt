@@ -1,0 +1,63 @@
+table incline: 36 degrees
+disk size is 88.46mm dia x 8.8mm thick 
+sets 1-4: 69.3g
+
+
+first set
+spread (pulley to pulley):380mm
+starting height: 450mm
+x=54.8mm is the touching point
+static spring stretching point: 46.65
+1)19_44
+2-4)..
+5)19_58
+
+
+
+second set
+Change spread (pulley to pulley): 290mm, 
+touching point 55.5mm
+static spring stretching point: 46.76mm
+starting height: 410mm
+1)20_00_46
+6)20_01_53
+
+
+3rd set
+spread (pulley to pulley):380mm
+starting height from touch point: 450mm
+touching point: 55.7mm
+static spring stretching point: 48.56
+1) 20_15_24
+2-5) ...
+6) 20_16_25
+
+4th set
+restretched rubber band
+spread (pulley to pulley):290mm
+starting height from touch point: 410mm
+touching point: 55.8mm
+static spring stretching point: 52.8
+1)20_22_45
+6)20_23_46
+
+
+set 5
+change disk mass=131g
+restretched rubber band
+spread (pulley to pulley):290mm
+starting height from touch point: 410mm
+touching point: 55.8mm
+static spring stretching point: 52.8
+1)20_46_41
+6)20_48_35
+
+set 6
+change disk mass=131g
+spread (pulley to pulley):380mm
+starting height from touch point: 220mm
+touching point: 55.8mm
+static spring stretching point: 52.8
+1)20_52_26
+6)20_53_54
+
