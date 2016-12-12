@@ -4,20 +4,20 @@ function gamma = computeGammaHat(obj,k,var,x,y,yhatk)
 % computing the gammas
 n = size(y,1);
 
-gamma = zeros(1,n); % row vector
-yhat = zeros(n,obj.K);
-for i = 1:n
-    normalization = 0;
-    for kk = 1:obj.K
-        if kk == k
-            yhat(i,kk) = yhatk(i); %use the new yhat_k
-        else
-            yhat(i,kk) = obj.predictData(kk,x(i,:)); %using optimal prediction from prior iteration
-        end
-        normalization = normalization + normpdf(y(i),yhat(i,kk),var(kk));
-    end
-    gamma(i) = normpdf(y(i),yhat(i,k),var(k))/normalization;
-end
+% yhat = n x k
+% y = n x 1
+% y_large = n x k
+% var = k x 1
+% var_large = n x k
+% prob = n x k
+% gamma = 1 x n
+yhat = predictData('all',x);
+yhat(:,k) = yhatk;
+y_large = repmat(y,1,obj.K);
+var_large = repmat(var',n,1);
+
+prob = normpdf(y_large,yhat,var_large);
+gamma = ( prob(:,k)./sum(prob,2) )';
 
 end
 

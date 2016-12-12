@@ -5,6 +5,10 @@ if nargin < 2
     k = obj.k_current;
 end
 
+if strcmpi('all',k)
+    k =  ':';
+end
+
 %return gamma for given k
 gamma_k = obj.gamma_train(k,:);
 
