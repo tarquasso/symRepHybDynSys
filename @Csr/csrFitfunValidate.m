@@ -77,6 +77,10 @@ for i=1:size(err,1) % go through all training examples
 end
 valfitness = valfitness/sum(weights);
 
+%calculate weighted, mean logarithmic error
+weights = Csr.getInstance.getWeightsVal();
+valfitness = - ( weights*log(1+abs(y - ypredval)) ) / sum(weights);
+
 %on 1st gen, initialise validation set info in the GP structure
 if gp.state.count == 1
     gp.results.history.valfitness(1:gp.runcontrol.num_gen,1) = 0;

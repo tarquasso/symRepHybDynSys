@@ -160,12 +160,7 @@ ypredtrain = geneOutputs * theta;
 
 %calculate weighted, mean logarithmic error
 weights = Csr.getInstance.getWeightsTrain();
-err = gp.userdata.ytrain - ypredtrain;
-fitness = 0;
-for i=1:size(err,1) % go through all training examples
-    fitness = fitness - weights(i)*log(1+norm(err(i,:)));
-end
-fitness = fitness/sum(weights);
+fitness = - ( weights*log(1+abs(gp.userdata.ytrain - ypredtrain)) ) / sum(weights);
 
 %--below is for post-run evaluation of models, it is not used during a GPTIPS run--
 
@@ -195,13 +190,10 @@ if gp.state.run_completed
         end
         
         ypredval = geneOutputsVal*theta; %create the prediction  on the validation data
+        
+        %calculate weighted, mean logarithmic error
         weights = Csr.getInstance.getWeightsVal();
-        err = gp.userdata.yval - ypredval;
-        fitness_val = 0;
-        for i=1:size(err,1) % go through all training examples
-            fitness_val = fitness_val - weights(i)*log(1+norm(err(i,:)));
-        end
-        fitness_val = fitness_val/sum(weights);
+        fitness_val = - ( weights*log(1+abs(gp.userdata.yval - ypredval)) ) / sum(weights);
         
         %compute r2 for validation data
         r2val = 1 - sum( (gp.userdata.yval - ypredval).^2 )/sum( (gp.userdata.yval - mean(gp.userdata.yval)).^2 );
@@ -232,15 +224,10 @@ if gp.state.run_completed
         end
         
         ypredtest = geneOutputsTest * theta; %create the prediction on the testing data
-
-        csr = Csr.getInstance;
-        weights = csr.getWeightsTest();
-        err = gp.userdata.ytest - ypredtest;
-        fitnessTest = 0;
-        for i=1:size(err,1) % go through all training examples
-            fitnessTest = fitnessTest - weights(i)*log(1+norm(err(i,:)));
-        end
-        fitnessTest = fitnessTest/sum(weights);
+        
+        %calculate weighted, mean logarithmic error
+        weights = Csr.getInstance.getWeightsTest();
+        fitnessTest = - ( weights*log(1+abs(gp.userdata.ytest - ypredtest)) ) / sum(weights);
         
         %compute r2 for test data
         r2test = 1 - sum( (gp.userdata.ytest - ypredtest).^2 )/sum( (gp.userdata.ytest - mean(gp.userdata.ytest)).^2 );
