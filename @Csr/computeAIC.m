@@ -19,14 +19,11 @@ varhat_k.test = obj.computeVar(k,gp,index,'test',gammahat);
 % compute global fitness using temporary values - E_csr (Equation 2)
 ecsr = 0;
 yhat = obj.predictData('all','val');
+weights = obj.getWeightsVal('all');
+weights(k,:) = gammahat;
 yhat(:,k) = yhatk;
 for kk=1:obj.K
-    if kk == k
-        weights = gammahat;
-    else
-        weights = obj.getWeightsVal(kk);
-    end
-    ecsr = ecsr + obj.kAbsError(yhat(:,kk),obj.y_val,weights);
+    ecsr = ecsr + obj.kAbsError(yhat(:,kk),obj.y_val,weights(kk,:));
 end
 
 c = gp.fitness.nodecount(index);
