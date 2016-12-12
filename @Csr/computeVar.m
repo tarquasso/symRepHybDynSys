@@ -34,8 +34,9 @@ if nargin > 5
     weightsk = gamma;
 end
 
-ecsr_k = obj.kAbsError(ypred,yactual,weightsk);
-var = sum(weightsk)/(sum(weightsk).^2 - sum(weightsk.^2))*ecsr_k;
+% eq.5 to calculate variance of mode k
+ecsr_k = obj.kQuadError(ypred,yactual,weightsk); % last part of the equation
+var = ( sum(weightsk)/(sum(weightsk).^2 - sum(weightsk.^2)) ) * ecsr_k;
 
 end
 

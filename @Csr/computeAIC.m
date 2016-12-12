@@ -6,6 +6,7 @@ yhatk = gpmodel.val.ypred;
 % QUESTION: GAMMAHAT FOR ALL MODES OR ONLY THIS ONE????
 % GREEDY WOULD SUGGEST ALL????
 % This is equivalent to option 1.b in runEM().
+% for one candidate for the new pareto set
 gammahat = obj.computeGammaHat(k,obj.var_val,obj.x_val,obj.y_val,yhatk);
 
 % compute temporary variance - sigmahat^2_k (Equation 5)
@@ -31,6 +32,7 @@ end
 c = gp.fitness.nodecount(index);
 N = size(obj.y_val,1);
 
+%global AIC
 aic = 2*c + N*log(ecsr);
 
 end

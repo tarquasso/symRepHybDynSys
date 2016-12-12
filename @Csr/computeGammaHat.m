@@ -10,9 +10,9 @@ for i = 1:n
     normalization = 0;
     for kk = 1:obj.K
         if kk == k
-            yhat(i,kk) = yhatk(i);
+            yhat(i,kk) = yhatk(i); %use the new yhat_k
         else
-            yhat(i,kk) = obj.predictData(kk,x(i,:));
+            yhat(i,kk) = obj.predictData(kk,x(i,:)); %using optimal prediction from prior iteration
         end
         normalization = normalization + normpdf(y(i),yhat(i,kk),var(kk));
     end
