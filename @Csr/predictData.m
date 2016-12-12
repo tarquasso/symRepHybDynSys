@@ -20,15 +20,16 @@ if strcmpi(x,'train') || isequal(x,obj.x_train)
 end
 
 assert(~(ischar(k) && ~ischar(x)),'You need to set x = {test,train,val} when you use k = all');
-
 dim = size(x,2);
-n = size(x,1);
-
 xsym = sym('x',[1 dim]);
-yhat = zeros(n,1);
-
-for i = 1:n
-    yhat(i) = eval(subs(obj.f{k},xsym,x(i,:)));
+contained = symvar(obj.f{k});
+dim_reduced = length(contained);
+x_important = cell(dim_reduced,1);
+for i=1:dim_reduced
+    var = find(xsym == contained(i));
+    x_important{i} = x(:,var);
 end
+g = matlabFunction(f);
+yhat = g(x_important{:});
 
 end
