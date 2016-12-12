@@ -23,12 +23,12 @@ classdef (Sealed) Csr < handle
     
     %other methods
     methods (Access = public)
+        [] = initiateCsr(obj,init) % initiate CSR class instance  
         [f,var] = runEM(obj,x,y,K)
         gamma_k = getWeightsTrain(obj,k)
         gamma_k = getWeightsTest(obj,k)
-        gamma_k = getWeightsVal(obj,k)
-        [] = initiateCsr(obj,init) % initiate CSR class instance
-        gp = gpConfig(obj,gp)
+        gamma_k = getWeightsVal(obj,k)    
+        gp = gpConfig(obj,gp) %move to private methods?
     end
     
     methods (Access = private)
