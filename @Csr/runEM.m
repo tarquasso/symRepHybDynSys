@@ -23,12 +23,15 @@ obj.var_test = obj.var_train;
 obj.var_val = obj.var_train;
 
 % initialize and normalize random membership values
+% normalize each column of gamma so the sum of columns is 1: 
 obj.gamma_train = rand(obj.K,size(obj.y_train,1));
 obj.gamma_train = obj.gamma_train./repmat(sum(obj.gamma_train),obj.K,1);
 
+%see above
 obj.gamma_test = rand(obj.K,size(obj.y_test,1));
 obj.gamma_test = obj.gamma_test./repmat(sum(obj.gamma_test),obj.K,1);
 
+%see above
 obj.gamma_val = rand(obj.K,size(obj.y_val,1));
 obj.gamma_val = obj.gamma_val./repmat(sum(obj.gamma_val),obj.K,1);
 
@@ -37,40 +40,43 @@ for k = 1:obj.K
     obj.k_current = k;
     
     % sr_solutions = symbolic_regression(y_n = f_k(u_n),fitfunc)
-    [gp,index] = obj.symReg(k); % returns pareto set
+    [gp,index_pareto] = obj.symReg(k); % returns pareto set
     
     % check out best solution
-    pop = size(index,1);
+    pop = size(index_pareto,1);
     aic = zeros(pop,1);
-    aic(index == 0) = Inf;
+    aic(index_pareto == 0) = Inf; %can't be a solution
         for i = 1:pop
-            if index(i) == 0
-                continue;
+            if index_pareto(i) == 0 
+                continue; %skip it, see above
             end
-            aic(i) = obj.computeLocalAIC(gp,i,k);
+            aic(i) = obj.computeLocalAIC(gp,i,k); %for all with index = 1, compute AIC
         end
     
     % set behavior f_k to solution with lowest local AIC score in sr_solutions
-    [~,i_best] = min(aic);
-    obj.f{k} = gpmodel2sym(gp,i_best);
+    [~,i_best] = min(aic); % only need index of aic vector
+    obj.f{k} = gpmodel2sym(gp,i_best); % take the best and format into symbolic eq
+    % convert into symbolic equation since it allows flexible value assignment
     
     % set variance for each behavior - sigma^2_k (Equation 5)
     obj.var_train(k) = obj.computeVar(k,gp,i_best,'train'); % on training set!!
     obj.var_test(k)  = obj.computeVar(k,gp,i_best,'test');
     obj.var_val(k)   = obj.computeVar(k,gp,i_best,'val');
-    
-    
+     
 end
 
+
 % while convergence is not achieved :
-while true % TODO: add convergence criterion
+notConverged = true;
+while notConverged % TODO: add convergence criterion
     
     % for each behavior in K modes :
     for k = 1:obj.K
         obj.k_current = k;
         
         % # EXPECTATION STEP ##
-        % for all the N data points :
+        % Calculate Membership values
+        % eq.4. for all the N data points in current k:
         obj.gamma_train(k,:) = obj.computeGamma(k,obj.var_train,obj.x_train,obj.y_train);
         obj.gamma_val(k,:) = obj.computeGamma(k,obj.var_val,obj.x_val,obj.y_val);
         obj.gamma_test(k,:) = obj.computeGamma(k,obj.var_test, obj.x_test,obj.y_test);
@@ -78,15 +84,15 @@ while true % TODO: add convergence criterion
 
         % # MAXIMIZATION STEP #
         % sr_solutions = symbolic_regression(y_n = f_k(u_n),fitfunc)
-        [gp,index] = obj.symReg(k); % returns pareto set
+        [gp,index_pareto] = obj.symReg(k); % returns pareto set
         
         % for each solution in sr_solutions :
-        pop = size(index,1);
+        pop = size(index_pareto,1);
         aic = zeros(pop,1);
-        aic(index == 0) = Inf;
+        aic(index_pareto == 0) = Inf; %for all solutions with 0 in index_pareto, set aic to infinity
         varhat_k = cell(pop,1);
         for i = 1:pop
-            if index(i) == 0
+            if index_pareto(i) == 0
                 continue;
             end
 
@@ -136,6 +142,11 @@ while true % TODO: add convergence criterion
         % #####################
         
     end
+    % Convergence occurs when global error produces less than 2% change for the
+    % last 5 iterations
+    % if
+    % notConverged = false;
+    % end
 end
 
 % return behaviors f_k and variances sigma^2_k
