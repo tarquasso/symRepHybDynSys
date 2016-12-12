@@ -18,7 +18,7 @@ obj.runningEM = true;
 
 % get some variables ready 
 obj.f = cell(obj.K,1);
-obj,var_train = zeros(obj.K,1);
+obj.var_train = zeros(obj.K,1);
 obj.var_test = obj.var_train;
 obj.var_val = obj.var_train;
 
