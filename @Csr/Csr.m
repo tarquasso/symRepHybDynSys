@@ -41,6 +41,7 @@ classdef (Sealed) Csr < handle
         yhat = predictData(obj,k,x);
         gamma = computeGamma(obj,k,var,x,y);
         gamma = computeGammaHat(obj,k,var,x,y,yhatk);
+        [] = fUpdate(obj,k,gp,i_best);
     end
     
     properties (Access = private)
@@ -50,6 +51,10 @@ classdef (Sealed) Csr < handle
         y_test;
         x_val;
         y_val;
+        
+        ypred_train;
+        ypred_test;
+        ypred_val;
         
         k_current;
         K;

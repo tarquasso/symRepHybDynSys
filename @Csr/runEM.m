@@ -16,12 +16,6 @@ errorMsg = 'You cannot start the EM-algorithm twice! Aborting';
 assert(obj.runningEM == false,errorMsg);
 obj.runningEM = true;
 
-% get some variables ready 
-obj.f = cell(obj.K,1);
-obj.var_train = zeros(obj.K,1);
-obj.var_test = obj.var_train;
-obj.var_val = obj.var_train;
-
 % initialize and normalize random membership values
 % normalize each column of gamma so the sum of columns is 1: 
 obj.gamma_train = rand(obj.K,size(obj.y_train,1));
@@ -55,7 +49,7 @@ for k = 1:obj.K
     
     % set behavior f_k to solution with lowest local AIC score in sr_solutions
     [~,i_best] = min(aic); % only need index of aic vector
-    obj.f{k} = gpmodel2sym(gp,i_best); % take the best and format into symbolic eq
+    obj.fUpdate(k,gp,i_best); % take the best and format into symbolic eq
     % convert into symbolic equation since it allows flexible value assignment
     
     % set variance for each behavior - sigma^2_k (Equation 5)
@@ -103,7 +97,8 @@ while notConverged % TODO: add convergence criterion
         
         % set behavior f_k to solution with lowest AIC score in sr_solution
         [~,i_best] = min(aic);
-        obj.f{k} = gpmodel2sym(gp,i_best);
+        obj.fUpdate(k,gp,i_best);
+        
         
         % "update weights (key: greedy implementation, in the next iteration
         % for the next mode this behavior is already fixed and should be
