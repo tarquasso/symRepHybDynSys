@@ -22,9 +22,7 @@ yhat = obj.predictData('all','val');
 weights = obj.getWeightsVal('all');
 weights(k,:) = gammahat;
 yhat(:,k) = yhatk;
-for kk=1:obj.K
-    ecsr = ecsr + obj.kAbsError(yhat(:,kk),obj.y_val,weights(kk,:));
-end
+ecsr = obj.absError(yhat,yactual,weights);
 
 c = gp.fitness.nodecount(index);
 N = size(obj.y_val,1);
