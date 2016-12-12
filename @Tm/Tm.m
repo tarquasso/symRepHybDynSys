@@ -45,6 +45,13 @@ classdef (Sealed) Tm < handle
     end
     
     properties (Access = private)
+        % Weight Balance
+        ptp;
+        ntp;
+        ntpTilde;
+        gammaTilde;
+        
+        
         x_train;
         y_train;
         x_test;

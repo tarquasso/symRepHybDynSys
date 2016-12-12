@@ -19,21 +19,21 @@ obj.runningTM = true;
 allKs = 1:obj.K;
 % for each mode k in K modes :
 for k = allKs
-    obj.k_current = k;
-    
-    % for each different mode k′ in K − 1 modes :
-    subsetOfKs = allKs(allKs~=k);
-    for subsetOfKs
-      % rebalance the PTP and NTP weights (Equation 13-16)
-      
+  obj.k_current = k;
+  
+  % for each different mode k′ in K − 1 modes :
+  subsetOfKs = allKs(allKs~=k);
+  for ksub = subsetOfKs
+    % rebalance the PTP and NTP weights (Equation 13-16)
+    obj.rebalancePTPNTP(ksub);
     % tm_solutions = symbolic_regression(Equation 17, Equation 18)
     % for each solution in tm_solutions :
-       % compute AIC score using transition fitness (Equation 8)
+    % compute AIC score using transition fitness (Equation 8)
     % set transition t k→k ′ (u n ) to solution with lowest AIC score in tm_solutions
-    end
-      
-%return transitions t k→k ′ (u n )
-
+  end
+  
+  %return transitions t k→k ′ (u n )
+end
 
 % algorithm finished
 obj.runningTM = false;
