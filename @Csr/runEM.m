@@ -65,9 +65,10 @@ for k = 1:obj.K
      
 end
 
-
-% while convergence is not achieved :
+last_ecsr = Inf;
+lastImprovement = 0;
 notConverged = true;
+% while convergence is not achieved :
 while notConverged % TODO: add convergence criterion
     
     % for each behavior in K modes :
@@ -142,11 +143,11 @@ while notConverged % TODO: add convergence criterion
         % #####################
         
     end
+    
     % Convergence occurs when global error produces less than 2% change for the
     % last 5 iterations
-    % if
-    % notConverged = false;
-    % end
+    % ecsr = 
+    
 end
 
 % return behaviors f_k and variances sigma^2_k
