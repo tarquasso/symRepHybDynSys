@@ -198,13 +198,18 @@ if gp.state.run_completed
         end
         
         ypredval = geneOutputsVal*theta; %create the prediction  on the validation data
-        weights = Csr.getInstance.getWeightsVal();
-        err = gp.userdata.yval - ypredval;
-        fitness_val = 0;
-        for i=1:size(err,1) % go through all training examples
-            fitness_val = fitness_val - weights(i)*log(1+norm(err(i,:)));
-        end
-        fitness_val = fitness_val/sum(weights);
+        
+        %calculate weighted, mean logarithmic error
+        gammatilde = Tm.getInstance.getGammaTildeVal(); %get gamma for current k
+        
+        N = size(gp.userdata.yval,1);
+        err = gp.userdata.yval(2:N) - logsig(ypredval); %
+        
+        %for i=1:(N-1) % go through all training examples
+        fitness_val = sum(-gammatilde.*((err).^2));
+        %end
+        sumGammaTilde = sum(gammatilde);
+        fitness_val = fitness_val/sumGammaTilde;
         
         %compute r2 for validation data
         r2val = 1 - sum( (gp.userdata.yval - ypredval).^2 )/sum( (gp.userdata.yval - mean(gp.userdata.yval)).^2 );
@@ -235,15 +240,18 @@ if gp.state.run_completed
         end
         
         ypredtest = geneOutputsTest * theta; %create the prediction on the testing data
-
-        csr = Csr.getInstance;
-        weights = csr.getWeightsTest();
-        err = gp.userdata.ytest - ypredtest;
-        fitnessTest = 0;
-        for i=1:size(err,1) % go through all training examples
-            fitnessTest = fitnessTest - weights(i)*log(1+norm(err(i,:)));
-        end
-        fitnessTest = fitnessTest/sum(weights);
+        
+        %calculate weighted, mean logarithmic error
+        gammatilde = Tm.getInstance.getGammaTildeTest(); %get gamma for current k
+        
+        N = size(gp.userdata.ytest,1);
+        err = gp.userdata.ytest(2:N) - logsig(ypredtest); %
+        
+        %for i=1:(N-1) % go through all training examples
+        fitnessTest = sum(-gammatilde.*((err).^2));
+        %end
+        sumGammaTilde = sum(gammatilde);
+        fitnessTest = fitnessTest/sumGammaTilde;
         
         %compute r2 for test data
         r2test = 1 - sum( (gp.userdata.ytest - ypredtest).^2 )/sum( (gp.userdata.ytest - mean(gp.userdata.ytest)).^2 );
