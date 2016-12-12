@@ -195,27 +195,40 @@ save(newFilename,'angleDeg','mdisc','spread','zTouch',...
 
 sizeNC = size(timeStepsNC,1);
 sizeIC = size(timeStepsIC,1);
-tAll=[]; zAll=[]; zdAll=[]; zddAll=[];
+tAll=[]; zAll=[]; zdAll=[]; zddAll=[]; mode = [];indices1 =[];indices2 = [];
 
-for i = 1:min(sizeNC,sizeIC)
+idxLast = 0;
+N = min(sizeNC,sizeIC);
+for i = 1:N
     tAll = [tAll;timeStepsNC{i};timeStepsIC{i}];
     zAll = [zAll;zNC{i};zIC{i}];
     zdAll = [zdAll;zdNC{i};zdIC{i}];
     zddAll = [zddAll;zddNC{i};zddIC{i}];
+    nclength = length(timeStepsNC{i});
+    iclength = length(timeStepsIC{i});
+    
+    mode = [mode;ones(nclength,1);2*ones(iclength,1)];
+    indices1 = [indices1, idxLast+(1:nclength) ];
+    indices2 = [indices2, nclength+(1:iclength)];
+    
+    idxLast =indices2(end);
 end
 
 figure(1001); 
 plot(tAll,zAll,'-..')
 hold on
 plot(tAll([1,end]),[zTouch,zTouch],'-..')
+plot(tAll,(mode-1)*0.1,'-..')
 
 figure; plot(tAll,zddAll,'-..')
 figure; plot(tAll,zdAll,'-..')
+
+
 % resave the data set
 newFilenameCombined = [filename,'_preprocessedcombined.mat'];
  
 
-save(newFilenameCombined,'angleDeg','mdisc','spread','zTouch','tAll','zAll','zdAll','zddAll');%,...
+save(newFilenameCombined,'angleDeg','mdisc','spread','zTouch','tAll','zAll','zdAll','zddAll','indices1','indices2','mode');%,...
   
 end
 

@@ -39,7 +39,7 @@ processCaptureData(filename,expStartTime,expEndTime,maxHeightAfterScaling,...
   minHeightAfterScaling,angleDeg,mdisc,discRadius,spread,...
   errStartTime,errEndTime,optiTrackWandScalingFactor,dataSetName);
 
-% return
+
 %% SET 5 - B
 clear all
 close all
