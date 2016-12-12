@@ -186,11 +186,37 @@ end
 
 % resave the data set
 newFilename = [filename,'_preprocessed.mat'];
+
 save(newFilename,'angleDeg','mdisc','spread','zTouch',...
   'timeStepsNC','zNC','zdNC','zddNC','zfitNC',...
   'timeStepsIC','zIC','zdIC','zddIC','zfitIC');%,...
   %'timeStepsLargeNC','zLargeNC','zdLargeNC','zddLargeNC','timeStepsLargeIC','zLargeIC','zdLargeIC','zddLargeIC');
 
+
+sizeNC = size(timeStepsNC,1);
+sizeIC = size(timeStepsIC,1);
+tAll=[]; zAll=[]; zdAll=[]; zddAll=[];
+
+for i = 1:min(sizeNC,sizeIC)
+    tAll = [tAll;timeStepsNC{i};timeStepsIC{i}];
+    zAll = [zAll;zNC{i};zIC{i}];
+    zdAll = [zdAll;zdNC{i};zdIC{i}];
+    zddAll = [zddAll;zddNC{i};zddIC{i}];
+end
+
+figure(1001); 
+plot(tAll,zAll,'-..')
+hold on
+plot(tAll([1,end]),[zTouch,zTouch],'-..')
+
+figure; plot(tAll,zddAll,'-..')
+figure; plot(tAll,zdAll,'-..')
+% resave the data set
+newFilenameCombined = [filename,'_preprocessedcombined.mat'];
+ 
+
+save(newFilenameCombined,'angleDeg','mdisc','spread','zTouch','tAll','zAll','zdAll','zddAll');%,...
+  
 end
 
 function [numOfSetsNew,timeStepsSplit,posDiscSplit] = extractSets(idxMode,timeSteps, posDisc,offsetStep,minDataPoints,type)

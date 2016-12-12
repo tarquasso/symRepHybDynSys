@@ -39,7 +39,7 @@ processCaptureData(filename,expStartTime,expEndTime,maxHeightAfterScaling,...
   minHeightAfterScaling,angleDeg,mdisc,discRadius,spread,...
   errStartTime,errEndTime,optiTrackWandScalingFactor,dataSetName);
 
-
+% return
 %% SET 5 - B
 clear all
 close all
@@ -58,6 +58,45 @@ spread=0.29;
 %Extract Start Time from Figues 1-3:
 expStartTime = 4.128;
 expEndTime = 6.753; 
+
+%if there is an error, surround it by this time frae. if not, just make
+%both values equal:
+errStartTime = 5.955;
+errEndTime = 5.955;
+
+% I used a 250mm wand, but told the mpotive software that it is a 500mm
+% wand, that is why we have a 1/2 factor here:
+optiTrackWandScalingFactor = 1/2;
+
+maxHeightAfterScaling = 0.429;
+touchPointAfterScaling = 0.0558/2;
+staticSpringStrectchingPointAfterScaling = 0.0528/2;
+minHeightAfterScaling = -0.025;
+
+processCaptureData(filename,expStartTime,expEndTime,maxHeightAfterScaling,...
+  touchPointAfterScaling,staticSpringStrectchingPointAfterScaling,...
+  minHeightAfterScaling,angleDeg,mdisc,discRadius,spread,...
+  errStartTime,errEndTime,optiTrackWandScalingFactor,dataSetName);
+
+
+%% SET 5 - C
+clear all
+close all
+clc
+dataSetFolder = 'set5';
+name = '16-May-2015 20_47_41';
+filename = [dataSetFolder,'/',name];
+subset = 'C';
+dataSetName = [dataSetFolder,subset];
+
+angleDeg = 36; % tilt of incline in degrees
+mdisc = 0.131; %kg mass of disc
+discRadius = 0.044230;
+spread=0.29;
+
+%Extract Start Time from Figues 1-3:
+expStartTime = 4.975;
+expEndTime = 7.421; 
 
 %if there is an error, surround it by this time frae. if not, just make
 %both values equal:
