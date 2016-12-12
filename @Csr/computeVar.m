@@ -1,9 +1,5 @@
-function var = computeVar(obj,k,gp,i,set,gamma)
+function vark = computeVar(obj,k,gp,i,set,gamma)
 % compute var for one mode  k.
-
-weightsk = [];
-ypred = [];
-yactual = [];
 
 if strcmpi(set,'val')
     
@@ -36,7 +32,7 @@ end
 
 % eq.5 to calculate variance of mode k
 ecsr_k = obj.kQuadError(ypred,yactual,weightsk); % last part of the equation
-var = ( sum(weightsk)/(sum(weightsk).^2 - sum(weightsk.^2)) ) * ecsr_k;
+vark = ( sum(weightsk)/(sum(weightsk).^2 - sum(weightsk.^2)) ) * ecsr_k;
 
 end
 

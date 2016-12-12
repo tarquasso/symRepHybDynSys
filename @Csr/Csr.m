@@ -38,7 +38,7 @@ classdef (Sealed) Csr < handle
         ecsr_k = kAbsError(obj,ypred,yactual,weights);
         ecsr_k = kQuadError(obj,ypred,yactual,weights);
         ecsr = absError(obj,ypred,yactual,weights);
-        var = computeVar(obj,k,gp,i,set,gamma);
+        vark = computeVar(obj,k,gp,i,set,gamma);
         yhat = predictData(obj,k,x);
         gamma = computeGamma(obj,k,var,x,y);
         gamma = computeGammaHat(obj,k,var,x,y,yhatk);
