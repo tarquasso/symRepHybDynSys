@@ -27,7 +27,9 @@ n_val = size(obj.x_val,1);
 obj.ptp = zeros(obj.K,n_train-1);
 obj.ntp = zeros(obj.K,n_train-1);
 obj.ntpTilde = zeros(obj.K,n_train-1);
-obj.gammaTilde = zeros(obj.K,n_train-1);
+obj.gammaTilde_train = zeros(obj.K,n_train-1);
+obj.gammaTilde_val = zeros(obj.K,n_train-1);
+obj.gammaTilde_test = zeros(obj.K,n_train-1);
 
 obj.ypred_train = zeros(obj.K,n_train);
 obj.ypred_test = zeros(obj.K,n_test);

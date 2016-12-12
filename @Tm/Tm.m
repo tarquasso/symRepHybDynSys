@@ -25,18 +25,16 @@ classdef (Sealed) Tm < handle
     methods (Access = public)
         [] = initiateTm(obj,init) % initiate Tm class instance  
         [f,var] = runTM(obj,x,y,K)
-        gamma_k = getTransitionsTrain(obj,k)
-        gamma_k = getTransitionsTest(obj,k)
-        gamma_k = getTransitionsVal(obj,k)    
+        gamma_k = getGammaTildeTrain(obj,k)
+        gamma_k = getGammaTildeVal(obj,k)
+        gamma_k = getGammaTildeTest(obj,k)
         gp = gpConfigTM(obj,gp) %move to private methods?
     end
     
     methods (Access = private)
         [gp,index_pareto] = symRegTM(obj,k)
-        aic = computeLocalAIC(obj,gp,index,k)
-        aic = computeAIC(obj,gp,index,k)
-        eTm_k = kAbsError(obj,ypred,yactual,weights);
-        eTm_k = kQuadError(obj,ypred,yactual,weights);
+        aic = computeAICTransitionFitness(obj,gp,index,k)
+        eTm_k = transitionFitness(obj,ypred,yactual,gammatilde);
         var = computeVar(obj,k,gp,i,set,gamma);
         yhat = predictData(obj,k,x);
         gamma = computeGamma(obj,k,var,x,y);
@@ -49,8 +47,9 @@ classdef (Sealed) Tm < handle
         ptp;
         ntp;
         ntpTilde;
-        gammaTilde;
-        
+        gammaTilde_train;
+        gammaTilde_val;
+        gammaTilde_test;
         
         x_train;
         y_train;
@@ -80,8 +79,8 @@ classdef (Sealed) Tm < handle
     end
     
     methods (Static)
-        [fitness,gp,theta,ypredtrain,fitnessTest,ypredtest,pvals,r2train,r2test,r2val,geneOutputs,geneOutputsTest,geneOutputsVal]=TmFitfun(evalstr,gp)
-        [valfitness,gp,ypredval] = TmFitfunValidate(gp)
+        [fitness,gp,theta,ypredtrain,fitnessTest,ypredtest,pvals,r2train,r2test,r2val,geneOutputs,geneOutputsTest,geneOutputsVal] = tmFitfun(evalstr,gp)
+        [valfitness,gp,ypredval] = tmFitfunValidate(gp)
     end
 end
 

@@ -10,6 +10,6 @@ ntpSum = sum(obj.ntp(k,:));
 
 obj.ntpTilde(k,:) = obj.ntp(k,:) * ptpSum/ntpSum;
 
-obj.gammaTilde(k,:) = obj.ptp(k,:) + obj.ntpTilde(k,:);
+obj.gammaTilde_train(k,:) = obj.ptp(k,:) + obj.ntpTilde(k,:);
 
 end

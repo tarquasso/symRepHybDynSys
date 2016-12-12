@@ -16,7 +16,7 @@ function gp = gpConfigTM(obj,gp)
     gp.nodes.const.p_int = 0.5;
     
     % fitness
-    gp.fitness.fitfun = @obj.csrFitfun;
+    gp.fitness.fitfun = @obj.tmFitfun;
     
     % multigene
     gp.genes.max_genes = 6;
@@ -37,7 +37,7 @@ function gp = gpConfigTM(obj,gp)
     gp.userdata.name = '1D Soft Contact';
     
     % enable hold out validation set
-    gp.nodes.user_fcn = @obj.csrFitfunValidate;
+    gp.nodes.user_fcn = @obj.tmFitfunValidate;
     
     % variable names 
     %gp.nodes.inputs.names = {'z','dz','theta','dtheta'};
