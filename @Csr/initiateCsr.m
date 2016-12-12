@@ -9,14 +9,22 @@ obj.y_test  = init.y_test;
 
 obj.K = init.K;
 obj.k_current = [];
+
+obj.f = cell(obj.K,1);
+obj.var_train = zeros(obj.K,1);
+obj.var_test = obj.var_train;
+obj.var_val = obj.var_train;
+
 obj.gamma_train = [];
 obj.gamma_test = [];
 obj.gamma_val = [];
 
-obj.f = [];
-obj.var_train = [];
-obj.var_test  = [];
-obj.var_val = [];
+n_train = size(obj.x_train,1);
+n_test  = size(obj.x_test,1);
+n_val = size(obj.x_val,1);
+obj.ypred_train = zeros(obj.K,n_train);
+obj.ypred_test = zeros(obj.K,n_test);
+obj.ypred_val = zeros(obj.K,n_val);
 
 obj.runningEM = false;
 obj.initiated = true;
