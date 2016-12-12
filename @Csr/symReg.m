@@ -1,7 +1,7 @@
 function [gp,index_pareto] = symReg(obj,k)
 
 % symbolic regression
-gp = rungp(@obj.gpConfig);
+gp = rungp(@obj.gpConfig); %Running GPTIPS (p.15)
 
 % compute fitness metrix and complexity for current population
 pop = gp.runcontrol.pop_size;
