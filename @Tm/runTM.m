@@ -12,8 +12,11 @@ errorMsg = 'You cannot initialize the TM-algorithm twice! Aborting';
 assert(tmObj.runningTM == false,errorMsg);
 tmObj.runningTM = true;
 
+
 % for each mode k in K modes :
-  % for each different mode k′ in K − 1 modes :
+for k = 1:tmObj.K
+    obj.k_current = k;
+    % for each different mode k′ in K − 1 modes :
     % rebalance the PTP and NTP weights (Equation 13-16)
     % tm_solutions = symbolic_regression(Equation 17, Equation 18)
     % for each solution in tm_solutions :
