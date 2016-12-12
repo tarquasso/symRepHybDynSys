@@ -14,10 +14,7 @@ N = size(obj.y_val,1);
 for p=1:pop
     gpmodel = gpmodel2struct(gp,p); % simplify gp to a single model struct
     err = obj.y_val - gpmodel.val.ypred; % calculate error based on validation - prediction
-    
-    for i=1:N
-        valfitness(p) = valfitness(p) - weights(i)*log( 1+norm(err(i)) ); % concatenate the fitness by each n
-    end
+    valfitness(p) = - weights*log( 1 + abs(err) );
 end
 
 valfitness = valfitness./sum(weights); %denominator operation of eq. 7, normalizes
