@@ -19,7 +19,8 @@ y = dataTrain.zddAll';
 else
   
 %% Synthetic Data Case
-[dataTrain,dataVal,dataTest] = loadHysteresisRelayData();
+% [dataTrain,dataVal,dataTest] = loadHysteresisRelayData();
+[dataTrain,dataVal,dataTest] = loadHysteresisRelayShortData();
 % [dataTrain,dataVal,dataTest] = loadContinuousHysteresisLoopData();
 
 N = length(dataTrain.u);
