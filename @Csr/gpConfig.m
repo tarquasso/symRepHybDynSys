@@ -1,13 +1,13 @@
 function gp = gpConfig(obj,gp)
-
+    
     % runcontrol
     gp.runcontrol.pop_size = 300; %population size
-    gp.runcontrol.num_gen = 500; % number of generations
+    gp.runcontrol.num_gen = 500; % number of generations - paper used 20000
     gp.runcontrol.showBestInputs = true; 
     gp.runcontrol.showValBestInputs = true;
-    gp.runcontrol.timeout = 30;
-    gp.runcontrol.runs = 2;
-    gp.runcontrol.parallel.auto = true;
+    gp.runcontrol.timeout = 30; %adjust?
+    gp.runcontrol.runs = 1; %single run per transition
+    gp.runcontrol.parallel.auto = true; %potentially faster
     
     % selection
     gp.selection.tournament.size = 15;
@@ -35,12 +35,30 @@ function gp = gpConfig(obj,gp)
     gp.userdata.xtest  = obj.x_test;
     gp.userdata.ytest  = obj.y_test;
     gp.userdata.name = '1D Soft Contact';
+    [gp.userdata.numytrain, gp.nodes.inputs.num_inp] = size(gp.userdata.xtrain);
+    
+    % some checks
     
     % enable hold out validation set
     gp.nodes.user_fcn = @obj.csrFitfunValidate;
     
-    % variable names 
-    %gp.nodes.inputs.names = {'z','dz','theta','dtheta'};
+    if size(gp.userdata.xtrain,1) ~= size(gp.userdata.ytrain,1)
+        error('There must be the same number of rows in gp.userdata.xtrain and gp.userdata.ytrain');
+    end
+    
+    if any(any(~isfinite(gp.userdata.xtrain))) || any(any(~isfinite(gp.userdata.ytrain)))
+        error('Non-finite values detected in gp.userdata.xtrain or gp.userdata.ytrain');
+    end
+    
+    if any(any(~isreal(gp.userdata.xtrain))) || any(any(~isreal(gp.userdata.ytrain)))
+        error('Complex values detected in gp.userdata.xtrain or gp.userdata.ytrain');
+    end
+    
+
+    %genetic operators
+    gp.operators.mutation.p_mutate = 0.03;    
+    gp.operators.crossover.p_cross = 0.70;
+    gp.operators.directrepro.p_direct = 1-gp.operators.mutation.p_mutate-gp.operators.crossover.p_cross; 
     
     % TODO: add termination criterion 
     % the maximum amount of time to run for (in seconds) 
@@ -51,7 +69,9 @@ function gp = gpConfig(obj,gp)
     % gp.fitness.terminate_value = 0.2;
 
     % function nodes
-    gp.nodes.functions.name = {'times','minus','plus','rdivide','square',...
-        'mult3','add3','sqrt','cube','neg'};
+    gp.nodes.functions.name = {'times','minus','plus','rdivide'};
     
+    %gp.nodes.functions.name = {'times','minus','plus','rdivide','square',...
+        %'mult3','add3','sqrt','cube','neg'};
+        
 end
