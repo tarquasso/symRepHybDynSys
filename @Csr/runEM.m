@@ -16,18 +16,8 @@ errorMsg = 'You cannot start the EM-algorithm twice! Aborting';
 assert(obj.runningEM == false,errorMsg);
 obj.runningEM = true;
 
-% initialize and normalize random membership values
-% normalize each column of gamma so the sum of columns is 1: 
-obj.gamma_train = rand(obj.K,size(obj.y_train,1));
-obj.gamma_train = obj.gamma_train./repmat(sum(obj.gamma_train),obj.K,1);
-
-%see above
-obj.gamma_test = rand(obj.K,size(obj.y_test,1));
-obj.gamma_test = obj.gamma_test./repmat(sum(obj.gamma_test),obj.K,1);
-
-%see above
-obj.gamma_val = rand(obj.K,size(obj.y_val,1));
-obj.gamma_val = obj.gamma_val./repmat(sum(obj.gamma_val),obj.K,1);
+% initialize random membership values
+% see initiateCsr.m
 
 % for each behavior in K modes :
 for k = 1:obj.K

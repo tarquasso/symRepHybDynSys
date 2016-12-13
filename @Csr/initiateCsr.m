@@ -15,9 +15,18 @@ obj.var_train = zeros(obj.K,1);
 obj.var_test = obj.var_train;
 obj.var_val = obj.var_train;
 
-obj.gamma_train = [];
-obj.gamma_test = [];
-obj.gamma_val = [];
+% initialize and normalize random membership values
+% normalize each column of gamma so the sum of columns is 1: 
+obj.gamma_train = rand(obj.K,size(obj.y_train,1));
+obj.gamma_train = obj.gamma_train./repmat(sum(obj.gamma_train),obj.K,1);
+
+%see above
+obj.gamma_test = rand(obj.K,size(obj.y_test,1));
+obj.gamma_test = obj.gamma_test./repmat(sum(obj.gamma_test),obj.K,1);
+
+%see above
+obj.gamma_val = rand(obj.K,size(obj.y_val,1));
+obj.gamma_val = obj.gamma_val./repmat(sum(obj.gamma_val),obj.K,1);
 
 n_train = size(obj.x_train,1);
 n_test  = size(obj.x_test,1);
