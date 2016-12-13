@@ -24,7 +24,7 @@ classdef (Sealed) Csr < handle
     %other methods
     methods (Access = public)
         [] = initiateCsr(obj,init) % initiate CSR class instance  
-        [f,var] = runEM(obj,x,y,K)
+        [f,var] = runEM(obj)
         gamma_k = getWeightsTrain(obj,k)
         gamma_k = getWeightsTest(obj,k)
         gamma_k = getWeightsVal(obj,k)    
