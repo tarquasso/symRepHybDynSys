@@ -6,7 +6,7 @@ if nargin < 2
     ksub = obj.ksub_current;
 end
 
-trans_k_ksub = obj.ypred_train(k,ksub,:);
+trans_k_ksub = obj.ypred_train(:,k,ksub);
 
 
 end

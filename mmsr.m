@@ -75,11 +75,11 @@ gammaTrain = zeros(NTrain,K); %KxN matrix
 gammaTrain((modeTrain == 1),1) = 1;
 gammaTrain((modeTrain == 2),2) = 1;
 
-gammaVal = zeros(K,NVal); %KxN matrix
+gammaVal = zeros(NVal,K); %KxN matrix
 gammaVal((modeVal == 1),1) = 1;
 gammaVal((modeVal == 2),2) = 1;
 
-gammaTest = zeros(K,NTest); %KxN matrix
+gammaTest = zeros(NTest,K); %KxN matrix
 gammaTest((modeTest == 1),1) = 1;
 gammaTest((modeTest == 2),2) = 1;
 
@@ -116,7 +116,7 @@ tmObj.initiateTm(initTm);
 %% Run the TM Algorithm
 tmObj.runTM();
 
-%% Evaluate the output
+%% Evaluate the outputs
 k=1;
 ksub=2;
 f_1_2 = tmObj.getAlgebraicFunction(obj,k,ksub);
