@@ -14,10 +14,14 @@ function gp = gpConfigTM(obj,gp)
     gp.selection.tournament.p_pareto = 0.7;
     gp.selection.elite_fraction = 0.3;
     gp.nodes.const.p_int = 0.5;
-    
+    tmobj = Tm.getInstance;
     % fitness
-    gp.fitness.fitfun = @obj.tmFitfun;
+    gp.fitness.fitfun = @tmobj.tmFitfun;
     
+    
+    %input configuration 
+    gp.nodes.inputs.num_inp = 1; 		         
+
     % multigene
     gp.genes.max_genes = 6;
     
@@ -29,15 +33,29 @@ function gp = gpConfigTM(obj,gp)
     
     % data
     gp.userdata.xtrain = obj.x_train;
-    gp.userdata.ytrain = obj.y_train(obj.ksub_current,:);
+    gp.userdata.ytrain = obj.y_train(:,obj.ksub_current);
     gp.userdata.xval   = obj.x_val;
-    gp.userdata.yval   = obj.y_val(obj.ksub_current,:);
+    gp.userdata.yval   = obj.y_val(:,obj.ksub_current);
     gp.userdata.xtest  = obj.x_test;
-    gp.userdata.ytest  = obj.y_test(obj.ksub_current,:);
+    gp.userdata.ytest  = obj.y_test(:,obj.ksub_current);
+    [gp.userdata.numytrain, gp.nodes.inputs.num_inp] = size(gp.userdata.xtrain);
+    
+    if size(gp.userdata.xtrain,1) ~= size(gp.userdata.ytrain,1)
+        error('There must be the same number of rows in gp.userdata.xtrain and gp.userdata.ytrain');
+    end
+    
+    if any(any(~isfinite(gp.userdata.xtrain))) || any(any(~isfinite(gp.userdata.ytrain)))
+        error('Non-finite values detected in gp.userdata.xtrain or gp.userdata.ytrain');
+    end
+    
+    if any(any(~isreal(gp.userdata.xtrain))) || any(any(~isreal(gp.userdata.ytrain)))
+        error('Complex values detected in gp.userdata.xtrain or gp.userdata.ytrain');
+    end
+    
     gp.userdata.name = 'Transitions';
     
     % enable hold out validation set
-    gp.nodes.user_fcn = @obj.tmFitfunValidate;
+    gp.nodes.user_fcn = @tmobj.tmFitfunValidate;
     
     % variable names 
     %gp.nodes.inputs.names = {'z','dz','theta','dtheta'};
@@ -52,7 +70,8 @@ function gp = gpConfigTM(obj,gp)
 
     %genetic operators
     gp.operators.mutation.p_mutate = 0.03;    
-    gp.operators.crossover.p_cross = 0.70;   
+    gp.operators.crossover.p_cross = 0.70;
+    gp.operators.directrepro.p_direct = 1-gp.operators.mutation.p_mutate-gp.operators.crossover.p_cross; 
     
     % function nodes
     gp.nodes.functions.name = {'times','minus','plus','rdivide'};

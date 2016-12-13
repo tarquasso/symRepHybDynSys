@@ -175,11 +175,15 @@ for i = 1:length(gp.nodes.functions.name)
     
 end
 
-%generate a function handle to the user defined fitness function
-checkfile = exist(func2str(gp.fitness.fitfun),'file');
-if ~(checkfile == 2 ) &&  ~(checkfile == 3) && ~(checkfile == 5) && ~(checkfile == 6)
+checkfile = isa(gp.fitness.fitfun,'function_handle');
+if ~(checkfile == 1 )
     error('Cannot find a fitness function. In the config file this must be specified as a function handle in the field gp.fitness.fitfun');
 end
+% % generate a function handle to the user defined fitness function
+% checkfile = exist(func2str(gp.fitness.fitfun),'file');
+% if ~(checkfile == 2 ) &&  ~(checkfile == 3) && ~(checkfile == 5) && ~(checkfile == 6)
+%     error('Cannot find a fitness function. In the config file this must be specified as a function handle in the field gp.fitness.fitfun');
+% end
 
 %constant format control string
 gp.nodes.const.format = [ '%0.' sprintf('%d',gp.nodes.const.num_dec_places) 'f' ];

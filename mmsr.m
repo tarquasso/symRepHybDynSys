@@ -4,6 +4,7 @@
 % https://en.wikipedia.org/wiki/Neo-Hookean_solid
 
 addpath('gptips2')
+t.TimeZone = 'America/New_York';
 
 %% Data Parsing
 
@@ -13,10 +14,9 @@ if(false)
 
 K = 2;
 % dataTrain.tAll
-u = [dataTrain.zAll,dataTrain.zdAll]';
-y = dataTrain.zddAll';
-
-% dataTrain.mode
+xTrain = [dataTrain.zAll,dataTrain.zdAll];
+yTrain = dataTrain.zddAll;
+mTrain = dataTrain.mode; % 1 is in the air, 2 is in contact
 
 else
   
@@ -27,19 +27,19 @@ else
 
 NTrain = length(dataTrain.u);
 K = dataTrain.K; %2
-xTrain = dataTrain.u; % one dimension u values
-yTrain = dataTrain.y;
-modeTrain = dataTrain.m; %for comparision
+xTrain = dataTrain.u'; % one dimension u values
+yTrain = dataTrain.y';
+modeTrain = dataTrain.m'; %for comparision
 
 NVal = length(dataVal.u);
-xVal = dataVal.u; % one dimension u values
-yVal = dataVal.y;
-modeVal = dataVal.m; %for comparision
+xVal = dataVal.u'; % one dimension u values
+yVal = dataVal.y';
+modeVal = dataVal.m'; %for comparision
 
 NTest = length(dataTest.u);
-xTest = dataTest.u; % one dimension u values
-yTest = dataTest.y;
-modeTest = dataTest.m; %for comparision
+xTest = dataTest.u'; % one dimension u values
+yTest = dataTest.y';
+modeTest = dataTest.m'; %for comparision
 
 end
 
