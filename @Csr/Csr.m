@@ -23,11 +23,14 @@ classdef (Sealed) Csr < handle
     
     %other methods
     methods (Access = public)
-        [] = initiateCsr(obj,init) % initiate CSR class instance  
-        [f,var] = runEM(obj)
-        gamma_k = getWeightsTrain(obj,k)
-        gamma_k = getWeightsTest(obj,k)
-        gamma_k = getWeightsVal(obj,k)    
+        [] = initiateCsr(obj,init); % initiate CSR class instance  
+        [f,var] = runEM(obj);
+        gamma_k = getWeightsTrain(obj,k);
+        gamma_k = getWeightsTest(obj,k);
+        gamma_k = getWeightsVal(obj,k);
+        gamma = getAllWeightsTrain(obj);
+        gamma = getAllWeightsTest(obj);
+        gamma = getAllWeightsVal(obj);
         gp = gpConfig(obj,gp) %move to private methods?
     end
     
@@ -74,8 +77,8 @@ classdef (Sealed) Csr < handle
     end
     
     methods (Static)
-        [fitness,gp,theta,ypredtrain,fitnessTest,ypredtest,pvals,r2train,r2test,r2val,geneOutputs,geneOutputsTest,geneOutputsVal]=csrFitfun(evalstr,gp)
-        [valfitness,gp,ypredval] = csrFitfunValidate(gp)
+        [fitness,gp,theta,ypredtrain,fitnessTest,ypredtest,pvals,r2train,r2test,r2val,geneOutputs,geneOutputsTest,geneOutputsVal]=csrFitfun(evalstr,gp);
+        [valfitness,gp,ypredval] = csrFitfunValidate(gp);
     end
 end
 
