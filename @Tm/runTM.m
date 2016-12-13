@@ -1,5 +1,6 @@
 % top level file for transition modelling
 % input:
+%   inputs u
 %   weights gamma
 %   the number of subfunctions - K
 % output:
@@ -27,6 +28,7 @@ for k = allKs
     
     % rebalance the PTP and NTP weights (Equation 13-16)
     obj.rebalancePTPNTP(ksub);
+    % These calculate gammaTilde_train and gammaTilde_val
     
     % tm_solutions = symbolic_regression(Equation 17, Equation 18)
     [gp,index_pareto] = obj.symRegTM(ksub); % returns pareto set
