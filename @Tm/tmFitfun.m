@@ -160,9 +160,8 @@ ypredtrain = geneOutputs * theta; %given by SR code
 
 %calculate weighted, mean logarithmic error
 gammatilde = Tm.getInstance.getGammaTildeTrain(); %get gamma for current k
-tmObj = Tm.getInstance;
 
-fitness = tmObj.transitionfitness(ypredtrain,gp.userdata.ytrain,gammatilde);
+fitness = Tm.transitionFitness(ypredtrain,gp.userdata.ytrain,gammatilde);
 
 %--below is for post-run evaluation of models, it is not used during a GPTIPS run--
 
@@ -196,7 +195,7 @@ if gp.state.run_completed
         %calculate weighted, mean logarithmic error
         gammatilde_val = Tm.getInstance.getGammaTildeVal(); %get gamma for current k
 
-        fitness_val = Tm.getInstance.transitionfitness(...
+        fitness_val = Tm.transitionFitness(...
           ypredval,gp.userdata.yval,gammatilde_val);
 
         %compute r2 for validation data
@@ -232,8 +231,7 @@ if gp.state.run_completed
         %calculate weighted, mean logarithmic error
         gammatilde_test = Tm.getInstance.getGammaTildeTest(); %get gamma for current k
         
-        fitnessTest = Tm.getInstance.transitionfitness(...
-          ypredtest,gp.userdata.ytest,gammatilde_test);
+        fitnessTest = Tm.transitionFitness(ypredtest,gp.userdata.ytest,gammatilde_test);
         
         %compute r2 for test data
         r2test = 1 - sum( (gp.userdata.ytest - ypredtest).^2 )/sum( (gp.userdata.ytest - mean(gp.userdata.ytest)).^2 );
