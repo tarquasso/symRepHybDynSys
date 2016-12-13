@@ -21,8 +21,8 @@ mTrain = dataTrain.mode; % 1 is in the air, 2 is in contact
 else
   
 %% Synthetic Data Case
-% [dataTrain,dataVal,dataTest] = loadHysteresisRelayData();
-[dataTrain,dataVal,dataTest] = loadHysteresisRelayShortData();
+[dataTrain,dataVal,dataTest] = loadHysteresisRelayData();
+% [dataTrain,dataVal,dataTest] = loadHysteresisRelayShortData();
 % [dataTrain,dataVal,dataTest] = loadContinuousHysteresisLoopData();
 
 NTrain = length(dataTrain.u);
