@@ -7,9 +7,9 @@ function gp = gpConfigTM(obj,gp)
     gp.runcontrol.showValBestInputs = true;
     gp.runcontrol.timeout = 30; %adjust?
     gp.runcontrol.runs = 1; %single run per transition
-    gp.runcontrol.parallel.auto = true; %not needed?
+    gp.runcontrol.parallel.auto = true; %potentially faster
     
-    % selection
+    % selection - not mentioned in paper
     gp.selection.tournament.size = 15;
     gp.selection.tournament.p_pareto = 0.7;
     gp.selection.elite_fraction = 0.3;
@@ -29,12 +29,12 @@ function gp = gpConfigTM(obj,gp)
     
     % data
     gp.userdata.xtrain = obj.x_train;
-    gp.userdata.ytrain = obj.y_train;
+    gp.userdata.ytrain = obj.y_train(obj.ksub_current,:);
     gp.userdata.xval   = obj.x_val;
-    gp.userdata.yval   = obj.y_val;
+    gp.userdata.yval   = obj.y_val(obj.ksub_current,:);
     gp.userdata.xtest  = obj.x_test;
-    gp.userdata.ytest  = obj.y_test;
-    gp.userdata.name = '1D Soft Contact';
+    gp.userdata.ytest  = obj.y_test(obj.ksub_current,:);
+    gp.userdata.name = 'Transitions';
     
     % enable hold out validation set
     gp.nodes.user_fcn = @obj.tmFitfunValidate;

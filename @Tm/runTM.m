@@ -6,7 +6,7 @@
 % output:
 %   transitions for each mode - t_k-k'
 
-function [transitions,var] = runTM(obj)
+function runTM(obj)
 
 % making sure we don't run the EM algorithm without initialization
 errorMsg = 'You cannot start the EM-algorithm without initialization! Aborting';
@@ -25,30 +25,30 @@ for k = allKs
   % for each different mode k′ in K − 1 modes :
   subsetOfKs = allKs(allKs~=k);
   for ksub = subsetOfKs
+    obj.ksub_current = ksub;
     
     % rebalance the PTP and NTP weights (Equation 13-16)
     obj.rebalancePTPNTP(ksub);
     % These calculate gammaTilde_train and gammaTilde_val
     
     % tm_solutions = symbolic_regression(Equation 17, Equation 18)
-    [gp,index_pareto] = obj.symRegTM(ksub); % returns pareto set
+    [gp,index_pareto] = obj.symRegTM(); % returns pareto set
     
     % for each solution in tm_solutions :
     pop = size(index_pareto,1);
     aic = zeros(pop,1);
     aic(index_pareto == 0) = Inf; %for all solutions with 0 in index_pareto, set aic to infinity
-    varhat_k = cell(pop,1);
     for i = 1:pop
       if index_pareto(i) == 0
         continue;
       end
       % compute AIC score using transition fitness (Equation 18)
-      [aic(i),varhat_k{i}] = obj.computeAICTransitionFitness(gp,i,k);
+      aic(i) = obj.computeAICTransitionFitness(gp,i);
     end
     
     % set behavior f_k to solution with lowest AIC score in sr_solution
     [~,i_best] = min(aic);
-    obj.fUpdate(k,gp,i_best);
+    obj.fUpdate(k,ksub,gp,i_best);
     % set transition t k→k ′ (u n ) to solution with lowest AIC score in tm_solutions
   end
   

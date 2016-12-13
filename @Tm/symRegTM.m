@@ -1,24 +1,20 @@
-function [gp,index_pareto] = symRegTM(obj,k)
+function [gp,index_pareto] = symRegTM(obj)
 
 % symbolic regression
-gp = rungp(@obj.gpConfigTM); %Running GPTIPS (p.15)
+gp = rungp(@obj.gpConfigTM); %Running GPTIPS (p.15) for obj.ksub_current
 
+%% Cant find in SR the val fitness for whole population, can't extract
 % compute fitness matrix and complexity for current population
 pop = gp.runcontrol.pop_size; % size of population
+
 valfitness = zeros(pop,1); % init fitness
 complexity = gp.fitness.complexity; %complexity integer, based on node complexities
-gammatilde = obj.getGammaTildeVal(k); %prior transition get gamma for current k
-
-N = size(obj.y_val,1);
+gammatilde_val = obj.getGammaTildeVal(obj.k_current); %prior transition get gamma for current k
 
 for p=1:pop
     gpmodel = gpmodel2struct(gp,p); % simplify gp to a single model struct
-    err = obj.y_val(2:N) - logsig(gpmodel.val.ypred); % calculate error based on validation - prediction
-    valfitness(p) = sum(-gammatilde .* (err.^2));
+    valfitness(p) = obj.transitionfitness(gpmodel.val.ypred,obj.y_val(obj.ksub_current,:),gammatilde_val);
 end
-
-sumGammaTilde = sum(gammatilde);
-valfitness = valfitness./sumGammaTilde; %denominator operation of eq. 7, normalizes
 
 % find pareto front as 0,1-vector
 index_pareto = ndfsort_rank1([valfitness complexity]); % finds pareto solution from gptips2 

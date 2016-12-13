@@ -24,22 +24,24 @@ classdef (Sealed) Tm < handle
     %other methods
     methods (Access = public)
         [] = initiateTm(obj,init) % initiate Tm class instance  
-        [f,var] = runTM(obj,x,y,K)
-        gamma_k = getGammaTildeTrain(obj,k)
-        gamma_k = getGammaTildeVal(obj,k)
-        gamma_k = getGammaTildeTest(obj,k)
+        runTM(obj,x,y,K)
+        f_k_ksub = getAlgebraicFunction(obj,k,ksub)
+
+        trans_k_ksub = getPredictedTransitionsTrain(obj,k,ksub)
+        trans_k_ksub = getPredictedTransitionsVal(obj,k,ksub)
+        trans_k_ksub = getPredictedTransitionsTest(obj,k,ksub)
+
+        gammatilde_k = getGammaTildeTrain(obj,k)
+        gammatilde_k = getGammaTildeVal(obj,k)
+        gammatilde_k = getGammaTildeTest(obj,k)
+
         gp = gpConfigTM(obj,gp) %move to private methods?
     end
     
     methods (Access = private)
         [gp,index_pareto] = symRegTM(obj,k)
         aic = computeAICTransitionFitness(obj,gp,index,k)
-        eTm_k = transitionFitness(obj,ypred,yactual,gammatilde);
-        var = computeVar(obj,k,gp,i,set,gamma);
-        yhat = predictData(obj,k,x);
-        gamma = computeGamma(obj,k,var,x,y);
-        gamma = computeGammaHat(obj,k,var,x,y,yhatk);
-        [] = fUpdate(obj,k,gp,i_best);
+        [] = fUpdate(obj,k,ksub,gp,i_best);
     end
     
     properties (Access = private)
@@ -59,32 +61,27 @@ classdef (Sealed) Tm < handle
         
         x_train;
         y_train;
-        x_test;
-        y_test;
         x_val;
         y_val;
+        x_test;
+        y_test;
         
         ypred_train;
-        ypred_test;
         ypred_val;
+        ypred_test;
         
         k_current;
+        ksub_current;
         K;
-        gamma_train;
-        gamma_test;
-        gamma_val;
-        
         
         f;
-        var_train;
-        var_test;
-        var_val;
         
         runningTM;
         initiated;
     end
     
     methods (Static)
+        fitness = transitionFitness(ypred,yactual,gammatilde);
         [fitness,gp,theta,ypredtrain,fitnessTest,ypredtest,pvals,r2train,r2test,r2val,geneOutputs,geneOutputsTest,geneOutputsVal] = tmFitfun(evalstr,gp)
         [valfitness,gp,ypredval] = tmFitfunValidate(gp)
     end

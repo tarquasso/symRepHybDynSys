@@ -156,19 +156,12 @@ else %if post-run, get stored coeffs from return value field
 end
 
 %calc. prediction of full training data set using the estimated weights
-ypredtrain = geneOutputs * theta;
+ypredtrain = geneOutputs * theta; %given by SR code
 
 %calculate weighted, mean logarithmic error
 gammatilde = Tm.getInstance.getGammaTildeTrain(); %get gamma for current k
 
-N = size(gp.userdata.ytrain,1);
-err = gp.userdata.ytrain(2:N) - logsig(ypredtrain); %
-
-%for i=1:(N-1) % go through all training examples
-fitness = sum(-gammatilde.*((err).^2));
-%end
-sumGammaTilde = sum(gammatilde);
-fitness = fitness/sumGammaTilde;
+fitness = Tm.getInstance.transitionfitness(ypredtrain,gp.userdata.ytrain,gammatilde);
 
 %--below is for post-run evaluation of models, it is not used during a GPTIPS run--
 
@@ -200,17 +193,11 @@ if gp.state.run_completed
         ypredval = geneOutputsVal*theta; %create the prediction  on the validation data
         
         %calculate weighted, mean logarithmic error
-        gammatilde = Tm.getInstance.getGammaTildeVal(); %get gamma for current k
-        
-        N = size(gp.userdata.yval,1);
-        err = gp.userdata.yval(2:N) - logsig(ypredval); %
-        
-        %for i=1:(N-1) % go through all training examples
-        fitness_val = sum(-gammatilde.*((err).^2));
-        %end
-        sumGammaTilde = sum(gammatilde);
-        fitness_val = fitness_val/sumGammaTilde;
-        
+        gammatilde_val = Tm.getInstance.getGammaTildeVal(); %get gamma for current k
+
+        fitness_val = Tm.getInstance.transitionfitness(...
+          ypredval,gp.userdata.yval,gammatilde_val);
+
         %compute r2 for validation data
         r2val = 1 - sum( (gp.userdata.yval - ypredval).^2 )/sum( (gp.userdata.yval - mean(gp.userdata.yval)).^2 );
         evalstr = strrep(evalstr,'.xval','.xtrain');
@@ -242,16 +229,10 @@ if gp.state.run_completed
         ypredtest = geneOutputsTest * theta; %create the prediction on the testing data
         
         %calculate weighted, mean logarithmic error
-        gammatilde = Tm.getInstance.getGammaTildeTest(); %get gamma for current k
+        gammatilde_test = Tm.getInstance.getGammaTildeTest(); %get gamma for current k
         
-        N = size(gp.userdata.ytest,1);
-        err = gp.userdata.ytest(2:N) - logsig(ypredtest); %
-        
-        %for i=1:(N-1) % go through all training examples
-        fitnessTest = sum(-gammatilde.*((err).^2));
-        %end
-        sumGammaTilde = sum(gammatilde);
-        fitnessTest = fitnessTest/sumGammaTilde;
+        fitnessTest = Tm.getInstance.transitionfitness(...
+          ypredtest,gp.userdata.ytest,gammatilde_test);
         
         %compute r2 for test data
         r2test = 1 - sum( (gp.userdata.ytest - ypredtest).^2 )/sum( (gp.userdata.ytest - mean(gp.userdata.ytest)).^2 );
