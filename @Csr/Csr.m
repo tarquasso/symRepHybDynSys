@@ -43,6 +43,8 @@ classdef (Sealed) Csr < handle
         ecsr = absError(obj,ypred,yactual,weights);
         vark = computeVar(obj,k,gp,i,set,gamma);
         yhat = predictData(obj,k,x);
+        yhat = fullPrediction(obj,x); % predict data according to mixture model
+        yhat = maxPrediction(obj,x); % predict data according to most likely membership
         gamma = computeGamma(obj,k,var,x,y);
         gamma = computeGammaHat(obj,k,var,x,y,yhatk);
         [] = fUpdate(obj,k,gp,i_best);
