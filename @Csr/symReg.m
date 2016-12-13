@@ -13,13 +13,11 @@ N = size(obj.y_val,1);
 
 for p=1:pop
     gpmodel = gpmodel2struct(gp,p); % simplify gp to a single model struct
-    err = obj.y_val - gpmodel.val.ypred; % calculate error based on validation - prediction
-    valfitness(p) = - weights*log( 1 + abs(err) );
+    valfitness(p) = obj.computeFitness(weights,obj.y_val,gpmodel.val.ypred);
 end
 
-valfitness = valfitness./sum(weights); %denominator operation of eq. 7, normalizes
-
 % find pareto front as 0,1-vector
+% both smaller is better (smaller fitness and smaller complexity) 
 index_pareto = ndfsort_rank1([valfitness complexity]); % finds pareto solution from gptips2 
 % dimension of index_pareto for whole population the last generation
 % index =1 for the best fitness in every complexity level

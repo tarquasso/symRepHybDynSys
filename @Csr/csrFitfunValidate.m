@@ -68,18 +68,9 @@ theta = gp.results.best.returnvalues;
 %calc. prediction of validation data set using the retreived weights
 ypredval = gene_outputs * theta;
 
-%calculate prediction error on validation data
+%calculate fitness
 weights = Csr.getInstance.getWeightsVal();
-err = y-ypredval;
-valfitness = 0;
-for i=1:size(err,1) % go through all training examples
-    valfitness = valfitness - weights(i)*log(1+norm(err(i,:)));
-end
-valfitness = valfitness/sum(weights);
-
-%calculate weighted, mean logarithmic error
-weights = Csr.getInstance.getWeightsVal();
-valfitness = - ( weights*log(1+abs(y - ypredval)) ) / sum(weights);
+valfitness = Csr.computeFitness(weights,y,ypredval);
 
 %on 1st gen, initialise validation set info in the GP structure
 if gp.state.count == 1

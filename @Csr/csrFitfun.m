@@ -158,9 +158,9 @@ end
 %calc. prediction of full training data set using the estimated weights
 ypredtrain = geneOutputs * theta;
 
-%calculate weighted, mean logarithmic error
+% calculate fitness
 weights = Csr.getInstance.getWeightsTrain();
-fitness = - ( weights*log(1+abs(gp.userdata.ytrain - ypredtrain)) ) / sum(weights);
+fitness = Csr.computeFitness(weights,gp.userdata.ytrain,ypredtrain);
 
 %--below is for post-run evaluation of models, it is not used during a GPTIPS run--
 
@@ -191,9 +191,9 @@ if gp.state.run_completed
         
         ypredval = geneOutputsVal*theta; %create the prediction  on the validation data
         
-        %calculate weighted, mean logarithmic error
+        %calculate fitness, validation
         weights = Csr.getInstance.getWeightsVal();
-        fitness_val = - ( weights*log(1+abs(gp.userdata.yval - ypredval)) ) / sum(weights);
+        fitness_val = Csr.computeFitness(weights,gp.userdata.yval,ypredval);
         
         %compute r2 for validation data
         r2val = 1 - sum( (gp.userdata.yval - ypredval).^2 )/sum( (gp.userdata.yval - mean(gp.userdata.yval)).^2 );
@@ -227,7 +227,7 @@ if gp.state.run_completed
         
         %calculate weighted, mean logarithmic error
         weights = Csr.getInstance.getWeightsTest();
-        fitnessTest = - ( weights*log(1+abs(gp.userdata.ytest - ypredtest)) ) / sum(weights);
+        fitnessTest = Csr.computeFitness(weights,gp.userdata.ytest,ypredtest);
         
         %compute r2 for test data
         r2test = 1 - sum( (gp.userdata.ytest - ypredtest).^2 )/sum( (gp.userdata.ytest - mean(gp.userdata.ytest)).^2 );
