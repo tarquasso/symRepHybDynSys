@@ -1,6 +1,6 @@
-function [dataTrain,dataVal,dataTest] = loadHysteresisRelayData()
-location = 'Data/HysteresisRelay/';
-name = 'hysteresisRelay';
+function [dataTrain,dataVal,dataTest] = loadContinuousHysteresisLoopData()
+location = 'Data/ContinuousHysteresisLoop/';
+name = 'continuousHysteresisLoop';
 filename = [location,'/',name];
 
 % Training Data Set has noise added on the u values

@@ -1,4 +1,4 @@
-function [dataTrain,dataVal,dataTest] = loadData()
+function [dataTrain,dataVal,dataTest] = loadSoftRubberData()
 
 location = 'Data/capturedData real rubber/';
 dataSetFolder = 'set5';

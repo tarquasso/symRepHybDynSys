@@ -1,12 +1,15 @@
-function generateHysteresisRelay()
+function generateContinuousHysteresisLoop()
 
+%Number of Modes:
 K = 2;
+name = 'continuousHysteresisLoop';
 %% Generate Validation Set
-transitions = 66;
-N = 2037+2059;
+transitions = 40; %number of transitions
 
-ufwd = linspace(-2,2,N/transitions); %generate equally spaced data set
-ubwd = flip(ufwd);
+N = 2051+2045; %number of smaples
+
+ufwd = linspace(-1,1,N/transitions); %generate equally spaced data set
+ubwd = flip(ufwd); % flip the data set
 u = repmat([ufwd,ubwd],1,transitions/2);
 
 N = length(u);
@@ -29,7 +32,7 @@ hold on
 plot(u,m,'ro')
 title('Training Data')
 
-newFilename = 'hysteresisRelay_val.mat';
+newFilename = [name,'_val.mat'];
 save(newFilename,'m','u','y','K');
 
 %% Generate Training Data: Add noise to u values
@@ -42,14 +45,14 @@ hold on
 plot(u,m,'ro')
 title('Validation Data')
 
-newFilename = 'hysteresisRelay_train.mat';
+newFilename = [name,'_train.mat'];
 save(newFilename,'m','u','y','K');
 
 %% Generate Test data: u values in different range
-transitions = 88;
-N = 4000;
+transitions = 34;
+N = 4100;
 
-ufwd = linspace(-1.5,1.5,N/transitions); %generate sinusoid wave
+ufwd = linspace(-1.0,1.0,N/transitions); %generate sinusoid wave
 ubwd = flip(ufwd);
 u = repmat([ufwd,ubwd],1,transitions/2);
 
@@ -71,20 +74,22 @@ plot(u,m,'ko')
 title('Test Data')
 transitionsTest = sum(abs(diff(m)));
 assert(transitionsTest == transitions,'not the amount of designed transitions');
-newFilename = 'hysteresisRelay_test.mat';
+
+
+newFilename = [name,'_test.mat'];
 save(newFilename,'m','u','y','K');
 
 end
 
 function newmode = modeTransition(u,mode)
 if(mode == 1)
-  if(u > 0.5)
+  if(u > 0.98)
     newmode = 2;
   else
     newmode = 1;
   end
 else %mode == 2
-  if(u < -0.5)
+  if(u < -0.98)
     newmode = 1;
   else
     newmode = 2;
@@ -94,8 +99,8 @@ end
 
 function [ynew] = behaviour(u,mode)
 if(mode == 1)
-    ynew = 1;
+    ynew = 0.5*u^2+u-0.5;
 else %mode == 2
-    ynew = -1;
+    ynew = -0.5*u^2+u+0.5;
 end
 end
