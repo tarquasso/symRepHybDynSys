@@ -16,6 +16,7 @@ function gp = gpConfigTM(obj,gp)
     gp.nodes.const.p_int = 0.5;
     tmobj = Tm.getInstance;
     % fitness
+    gp.fitness.minimisation = true;         %true to minimise the fitness function (if false it is maximised).
     gp.fitness.fitfun = @tmobj.tmFitfun;
     
     

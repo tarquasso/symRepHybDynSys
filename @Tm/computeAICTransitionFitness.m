@@ -7,7 +7,7 @@ ypred = gpmodel.val.ypred;
 yactual = obj.y_val;
 gammatilde = obj.getGammaTildeVal(obj.k_current);
 
-aic = 2*c + N*log(obj.transitionfitness(ypred,yactual,gammatilde));
+aic = 2*c + N*log(obj.transitionFitness(ypred,yactual,gammatilde));
 
 end
 

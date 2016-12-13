@@ -99,3 +99,4 @@ if valfitness < gp.results.valbest.valfitness || ...
     gp.results.valbest.valfitness = valfitness;
     gp.results.valbest.foundatgen = gp.state.count - 1;
 end
+end
