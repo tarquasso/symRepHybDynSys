@@ -1,11 +1,11 @@
-function generateHysteresisRelay()
+function generateHysteresisRelayShort()
 
 K = 2;
 name = 'hysteresisRelayShort';
 
 %% Generate Validation Set
-transitions = 2;
-N = 10;
+transitions = 4;
+N = 20;
 
 ufwd = linspace(-2,2,N/transitions); %generate equally spaced data set
 ubwd = flip(ufwd);
