@@ -71,17 +71,17 @@ gammaTest = csrObj.gamma_test;
 else
   
 %% Generate Gamma:
-gammaTrain = zeros(K,NTrain); %KxN matrix
-gammaTrain(1, (modeTrain == 1) ) = 1;
-gammaTrain(2, (modeTrain == 2) ) = 1;
+gammaTrain = zeros(NTrain,K); %KxN matrix
+gammaTrain((modeTrain == 1),1) = 1;
+gammaTrain((modeTrain == 2),2) = 1;
 
 gammaVal = zeros(K,NVal); %KxN matrix
-gammaVal(1, (modeVal == 1) ) = 1;
-gammaVal(2, (modeVal == 2) ) = 1;
+gammaVal((modeVal == 1),1) = 1;
+gammaVal((modeVal == 2),2) = 1;
 
 gammaTest = zeros(K,NTest); %KxN matrix
-gammaTest(1, (modeTest == 1) ) = 1;
-gammaTest(2, (modeTest == 2) ) = 1;
+gammaTest((modeTest == 1),1) = 1;
+gammaTest((modeTest == 2),2) = 1;
 
 end
 
