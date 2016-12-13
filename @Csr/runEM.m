@@ -75,56 +75,23 @@ while notConverged % TODO: add convergence criterion
         pop = size(index_pareto,1);
         aic = zeros(pop,1);
         aic(index_pareto == 0) = Inf; %for all solutions with 0 in index_pareto, set aic to infinity
-        varhat_k = cell(pop,1);
         for i = 1:pop
             if index_pareto(i) == 0
                 continue;
             end
 
             % compute AIC score using global fitness (Equation 8)
-            [aic(i),varhat_k{i}] = obj.computeAIC(gp,i,k);
+            aic(i) = obj.computeAIC(gp,i,k);
         end        
         
         % set behavior f_k to solution with lowest AIC score in sr_solution
         [~,i_best] = min(aic);
         obj.fUpdate(k,gp,i_best);
         
-        
-        % "update weights (key: greedy implementation, in the next iteration
-        % for the next mode this behavior is already fixed and should be
-        % reflected in all the parameters for this mode. Especially when
-        % computing the global E_CSR we need to have to up-to-date
-        % weights."
-        % QUESTION: YES OR NO?
-        % PSEUDO ALGORITHM IN PAPER WOULD SUGGEST NO.
-        % let's say NO for now
-        
-        % OPTION (1)
-        %obj.gamma_train(k,:) = obj.computeGamma(k,obj.var_train,obj.x_train,obj.y_train);
-        %obj.gamma_val(k,:) = obj.computeGamma(k,obj.var_val,obj.x_val,obj.y_val);
-        %obj.gamma_test(k,:) = obj.computeGamma(k,obj.var_test, obj.x_test,obj.y_test);
-        % set variance for each behavior - sigma^2_k (Equation 5)
-        %obj.var_train(k) = obj.computeVar(k,gp,i_best,'train'); % on training set!!
-        %obj.var_test(k)  = obj.computeVar(k,gp,i_best,'test');
-        %obj.var_val(k)   = obj.computeVar(k,gp,i_best,'val');
-        
-        % OPTION (1).(b)
-        % reverse the order of (1).
-        
-        % OPTION (2)
-        % set variance for each behavior - sigma^2_k (Equation 5)
-        %obj.var_train(k) = varhat_k{i_best}.train;
-        %obj.var_test(k)  = varhat_k{i_best}.test;
-        %obj.var_val(k)   = varhat_k{i_best}.val;
-        
-        % OPTION (3)
         % set variance for each behavior - sigma^2_k (Equation 5)
         obj.var_train(k) = obj.computeVar(k,gp,i_best,'train'); % on training set!!
         obj.var_test(k)  = obj.computeVar(k,gp,i_best,'test');
         obj.var_val(k)   = obj.computeVar(k,gp,i_best,'val');
-        % right now I believe it's this update but I cannnot decide
-        % between the three. 
-        
         % #####################
         
     end
