@@ -94,7 +94,7 @@ if isnumeric(ID) && ( ID < 1 || ID > numel(gp.pop) )
 end
 
 if ~strncmpi('regressmulti', func2str(gp.fitness.fitfun),12)
-    error('GPMODEL2SYM may only be used for multigene symbolic regression problems.');
+%     error('GPMODEL2SYM may only be used for multigene symbolic regression problems.');
 end
 
 try
