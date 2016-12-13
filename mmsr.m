@@ -3,6 +3,8 @@
 % https://en.wikipedia.org/wiki/Mooney%E2%80%93Rivlin_solid
 % https://en.wikipedia.org/wiki/Neo-Hookean_solid
 
+addpath('gptips2')
+
 %% Data Parsing
 
 if(false)
@@ -23,16 +25,18 @@ else
 [dataTrain,dataVal,dataTest] = loadHysteresisRelayShortData();
 % [dataTrain,dataVal,dataTest] = loadContinuousHysteresisLoopData();
 
-N = length(dataTrain.u);
+NTrain = length(dataTrain.u);
 K = dataTrain.K; %2
 xTrain = dataTrain.u; % one dimension u values
 yTrain = dataTrain.y;
 modeTrain = dataTrain.m; %for comparision
 
+NVal = length(dataVal.u);
 xVal = dataVal.u; % one dimension u values
 yVal = dataVal.y;
 modeVal = dataVal.m; %for comparision
 
+NTest = length(dataTest.u);
 xTest = dataTest.u; % one dimension u values
 yTest = dataTest.y;
 modeTest = dataTest.m; %for comparision
@@ -67,28 +71,31 @@ gammaTest = csrObj.gamma_test;
 else
   
 %% Generate Gamma:
-gammaTrain = zeros(K,N); %KxN matrix
+gammaTrain = zeros(K,NTrain); %KxN matrix
 gammaTrain(1, (modeTrain == 1) ) = 1;
 gammaTrain(2, (modeTrain == 2) ) = 1;
 
-gammaVal = zeros(K,N); %KxN matrix
+gammaVal = zeros(K,NVal); %KxN matrix
 gammaVal(1, (modeVal == 1) ) = 1;
 gammaVal(2, (modeVal == 2) ) = 1;
 
-gammaTest = zeros(K,N); %KxN matrix
+gammaTest = zeros(K,NTest); %KxN matrix
 gammaTest(1, (modeTest == 1) ) = 1;
 gammaTest(2, (modeTest == 2) ) = 1;
 
 end
-% 
-% figure(1); clf;
-% plot(1:N,gammaTrain,'-..')
-% 
-% figure(2); clf;
-% plot(1:N,gammaVal,'-..')
-% 
-% figure(3); clf;
-% plot(1:N,gammaTest,'-..')
+
+figure(1); clf;
+plot(1:NTrain,gammaTrain,'-..')
+title('Gama Train')
+
+figure(2); clf;
+plot(1:NVal,gammaVal,'-..')
+title('Gama Validation')
+
+figure(3); clf;
+plot(1:NTest,gammaTest,'-..')
+title('Gama Test')
 
 %% Set up Init File
 initTm.x_train = xTrain;
