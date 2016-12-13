@@ -21,22 +21,22 @@ n_test  = length(obj.x_test);
 n_val = length(obj.x_val);
 
 % Weight Balance
-obj.ptp_train = zeros(obj.K,n_train-1); %one element shorter
-obj.ptp_val = zeros(obj.K,n_val-1); %one element shorter
+obj.ptp_train = zeros(n_train-1,obj.K); %one element shorter
+obj.ptp_val = zeros(n_val-1,obj.K); %one element shorter
 
-obj.ntp_train = zeros(obj.K,n_train-1); %one element shorter
-obj.ntp_val = zeros(obj.K,n_val-1); %one element shorter
+obj.ntp_train = zeros(n_train-1,obj.K); %one element shorter
+obj.ntp_val = zeros(n_val-1,obj.K); %one element shorter
 
-obj.ntpTilde_train = zeros(obj.K,n_train-1); %one element shorter
-obj.ntpTilde_val = zeros(obj.K,n_val-1); %one element shorter
+obj.ntpTilde_train = zeros(n_train-1,obj.K); %one element shorter
+obj.ntpTilde_val = zeros(n_val-1,obj.K); %one element shorter
 
-obj.gammaTilde_train = zeros(obj.K,n_train-1);%one element shorter
-obj.gammaTilde_val = zeros(obj.K,n_val-1);%one element shorter
+obj.gammaTilde_train = zeros(n_train-1,obj.K);%one element shorter
+obj.gammaTilde_val = zeros(n_val-1,obj.K);%one element shorter
 
 % Outputs
-obj.ypred_train = zeros(obj.K,obj.K,n_train);
-obj.ypred_test = zeros(obj.K,obj.K,n_test);
-obj.ypred_val = zeros(obj.K,obj.K,n_val);
+obj.ypred_train = zeros(n_train,obj.K,obj.K);
+obj.ypred_test = zeros(n_test,obj.K,obj.K);
+obj.ypred_val = zeros(n_val,obj.K,obj.K);
 
 obj.runningTM = false;
 obj.initiated = true;

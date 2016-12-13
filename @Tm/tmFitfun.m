@@ -160,8 +160,9 @@ ypredtrain = geneOutputs * theta; %given by SR code
 
 %calculate weighted, mean logarithmic error
 gammatilde = Tm.getInstance.getGammaTildeTrain(); %get gamma for current k
+tmObj = Tm.getInstance;
 
-fitness = Tm.getInstance.transitionfitness(ypredtrain,gp.userdata.ytrain,gammatilde);
+fitness = tmObj.transitionfitness(ypredtrain,gp.userdata.ytrain,gammatilde);
 
 %--below is for post-run evaluation of models, it is not used during a GPTIPS run--
 

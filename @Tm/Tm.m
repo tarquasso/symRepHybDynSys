@@ -24,7 +24,7 @@ classdef (Sealed) Tm < handle
     %other methods
     methods (Access = public)
         [] = initiateTm(obj,init) % initiate Tm class instance  
-        runTM(obj,x,y,K)
+        runTM(obj)
         f_k_ksub = getAlgebraicFunction(obj,k,ksub)
 
         trans_k_ksub = getPredictedTransitionsTrain(obj,k,ksub)
