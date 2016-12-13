@@ -49,7 +49,7 @@ for k = 1:obj.K
      
 end
 
-last_ecsr = Inf;
+last_ecsr = realmax;
 lastImprovement = 0;
 notConverged = true;
 % while convergence is not achieved :
@@ -98,7 +98,19 @@ while notConverged % TODO: add convergence criterion
     
     % Convergence occurs when global error produces less than 2% change for the
     % last 5 iterations
-    % ecsr = 
+    ecsr = obj.absError(obj.ypred_val,obj.y_val,obj.gamma_val);
+    
+    relative = 1 - ecsr/last_ecsr;
+    
+    if relative > 0.02
+        lastImprovement = 0;
+    else 
+        lastImprovement = lastImprovement + 1;
+    end
+    
+    if lastImprovement > 5
+        break;
+    end
     
 end
 
