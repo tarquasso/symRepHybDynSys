@@ -7,7 +7,7 @@ function gp = gpConfigTM(obj,gp)
     gp.runcontrol.showValBestInputs = true;
     gp.runcontrol.timeout = 30; %adjust?
     gp.runcontrol.runs = 1; %single run per transition
-    gp.runcontrol.parallel.auto = true; %potentially faster
+    gp.runcontrol.parallel.auto = false; %potentially faster
     
     % selection - not mentioned in paper
     gp.selection.tournament.size = 15;
@@ -54,10 +54,11 @@ function gp = gpConfigTM(obj,gp)
     
     gp.userdata.name = 'Transitions';
     
-    % enable hold out validation set
-    gp.nodes.user_fcn = @tmobj.tmFitfunValidate;
     
-    % variable names 
+    %enables hold out validation set
+    gp.userdata.user_fcn =  @tmobj.tmFitfunValidate;
+    
+    % variable names
     %gp.nodes.inputs.names = {'z','dz','theta','dtheta'};
     
     % TODO: add termination criterion 

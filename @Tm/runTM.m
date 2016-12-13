@@ -28,7 +28,7 @@ for k = allKs
     obj.ksub_current = ksub;
     
     % rebalance the PTP and NTP weights (Equation 13-16)
-    obj.rebalancePTPNTP(ksub);
+    obj.rebalancePTPNTP(k);
     % These calculate gammaTilde_train and gammaTilde_val
     
     % tm_solutions = symbolic_regression(Equation 17, Equation 18)

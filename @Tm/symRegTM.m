@@ -13,7 +13,7 @@ gammatilde_val = obj.getGammaTildeVal(obj.k_current); %prior transition get gamm
 
 for p=1:pop
     gpmodel = gpmodel2struct(gp,p); % simplify gp to a single model struct
-    valfitness(p) = obj.transitionfitness(gpmodel.val.ypred,obj.y_val(obj.ksub_current,:),gammatilde_val);
+    valfitness(p) = Tm.transitionFitness(gpmodel.val.ypred,obj.y_val(:,obj.ksub_current),gammatilde_val);
 end
 
 % find pareto front as 0,1-vector

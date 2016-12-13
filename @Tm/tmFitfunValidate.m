@@ -70,8 +70,7 @@ ypredval = gene_outputs * theta;
 
 %calculate prediction error on validation data
 gammatilde_val = Tm.getInstance.getGammaTildeVal();
-valfitness = Tm.getInstance.transitionfitness(...
-          ypredval,gp.userdata.yval,gammatilde_val);
+valfitness = Tm.transitionFitness(ypredval,gp.userdata.yval,gammatilde_val);
         
 %on 1st gen, initialise validation set info in the GP structure
 if gp.state.count == 1
