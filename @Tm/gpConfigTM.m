@@ -62,7 +62,8 @@ function gp = gpConfigTM(obj,gp)
     %    'mult3','add3','sqrt','cube','neg'};
     
     % constants
-    gp.nodes.const.p_ERC = 0.05;
+    gp.nodes.const.p_ERC = 0.1; % probability of a constant instead of x
+    gp.nodes.const.range = [-10 10]; % range of constants
     
     % multigene - NO
     gp.genes.multigene = false;
