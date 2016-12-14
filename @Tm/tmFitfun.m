@@ -9,7 +9,7 @@ ytrain = gp.userdata.ytrain;  % = n x 1
 ypred = Tm.predictDataTM(evalstr,x);
 
 % fitness
-gammatilde = Tm.getGammaTildeTrain();
-fitness = Tm.getInstance.transitionFitness(ypred,ytrain,gammatilde);
+gammatilde = Tm.getInstance.getGammaTildeTrain();
+fitness = Tm.transitionFitness(ypred,ytrain,gammatilde);
 
 end
