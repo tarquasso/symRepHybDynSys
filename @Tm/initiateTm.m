@@ -14,6 +14,11 @@ obj.K = init.K;
 obj.k_current = [];
 obj.ksub_current = [];
 
+% do not touch
+obj.pareto_fstr = [];
+obj.pareto_complex = [];
+obj.pareto_fit = [];
+
 obj.f = cell(obj.K,obj.K); %transition functions KxK, diagonal terms do not matter
 
 n_train = length(obj.x_train);

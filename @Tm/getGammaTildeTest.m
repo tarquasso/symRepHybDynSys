@@ -6,7 +6,7 @@ if nargin < 2
 end
 
 %return gamma for given k
-gammatilde_k = obj.gammaTilde_test(k,:);
+gammatilde_k = obj.gammaTilde_test(:,k);
 
 end
 
