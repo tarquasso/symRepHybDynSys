@@ -79,7 +79,7 @@ classdef (Sealed) Csr < handle
     end
     
     methods (Static)
-        [fitness,gp,theta,ypredtrain,fitnessTest,ypredtest,pvals,r2train,r2test,r2val,geneOutputs,geneOutputsTest,geneOutputsVal]=csrFitfun(evalstr,gp);
+        [fitness,gp] = csrFitfun(evalstr,gp);
         [valfitness,gp,ypredval] = csrFitfunValidate(gp);
         fitness = computeFitness(weights,y,ypred);
     end
