@@ -1,13 +1,15 @@
 function aic = computeAICTransitionFitness(obj,gp,index)
 
-c = gp.fitness.nodecount(index);
-N = size(obj.y_val,1);
-gpmodel = gpmodel2struct(gp,index);
-ypred = gpmodel.val.ypred;
-yactual = gp.userdata.yval;
-gammatilde = obj.getGammaTildeVal(obj.k_current);
+yval = gp.userdata.yval;
+xval = gp.userdata.xval;
 
-aic = 2*c + N*log(obj.transitionFitness(ypred,yactual,gammatilde));
+ypredval = obj.predictDataTM(gp,xval,index);
+gammatildeval = obj.getGammaTildeVal(obj.k_current);
+
+c = gp.fitness.nodecount(index);
+N = size(yval,1);
+
+aic = 2*c + N*log(obj.transitionFitness(ypredval,yval,gammatildeval));
 
 end
 
