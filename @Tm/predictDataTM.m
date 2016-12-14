@@ -23,12 +23,18 @@ else
 end
 
 dim = size(x,2);
+n = size(x,1);
 
 for d = 1:dim
     string = ['x' num2str(d) ' = x(:,' num2str(d) ');'];
     eval(string);
 end
 
-ypred= eval(evalstr{1});
+% preallocate and use (:) to ensure we populate the whole vector
+% consider the case where evalstr{1} is only a constant. Output will be a
+% scalar. With this operation, we ensure that this scalar is mapped to all
+% of the ypred vector.
+ypred = zeros(n,1);
+ypred(:) = eval(evalstr{1});
 
 end
