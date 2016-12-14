@@ -25,7 +25,7 @@ for p=1:pop
 end
 
 % find pareto front as 0,1-vector
-index_pareto = ndfsort_rank1([valfitness complexity]); % finds pareto solution from gptips2 
+index_pareto = logical(ndfsort_rank1([valfitness complexity])); % finds pareto solution from gptips2 
 % dimension of index_pareto for whole population the last generation
 % index =1 for the best fitness in every complexity level
 
@@ -37,7 +37,7 @@ fstr = gp.pop(index_pareto);
 % merge current and new pareto set
 valfitness = [valfitness;obj.pareto_fit];
 complexity = [complexity;obj.pareto_complex];
-fpop = [fstr ; ojb.pareto_fstr];
+fpop = [fstr ; obj.pareto_fstr];
 
 % find new overall pareto set
 index_pareto = ndfsort_rank1([valfitness complexity]);

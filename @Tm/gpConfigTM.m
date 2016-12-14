@@ -1,8 +1,10 @@
 function gp = gpConfigTM(obj,gp)
+    
+    tmobj = Tm.getInstance;
 
     % runcontrol
     gp.runcontrol.pop_size = 64; %population size
-    gp.runcontrol.num_gen = 20000; % number of generations - paper used 20000
+    gp.runcontrol.num_gen = 200; % number of generations - paper used 20000
     gp.runcontrol.showBestInputs = true; 
     gp.runcontrol.showValBestInputs = true;
     gp.runcontrol.timeout = inf; %adjust?
@@ -15,7 +17,6 @@ function gp = gpConfigTM(obj,gp)
     gp.selection.tournament.p_pareto = 0.7;
     gp.selection.elite_fraction = 0.3;
     gp.nodes.const.p_int = 0.5;
-    tmobj = Tm.getInstance;
     
     % fitness
     gp.fitness.minimisation = true;         %true to minimise the fitness function (if false it is maximised).
@@ -31,9 +32,10 @@ function gp = gpConfigTM(obj,gp)
     gp.userdata.yval   = obj.y_val(:,obj.ksub_current);
     gp.userdata.xtest  = obj.x_test;
     gp.userdata.ytest  = obj.y_test(:,obj.ksub_current);
-    %enables hold out validation set
-    %gp.userdata.user_fcn =  @tmobj.tmFitfunValidate;
     [gp.userdata.numytrain, gp.nodes.inputs.num_inp] = size(gp.userdata.x);
+    
+    % enables paretoCheck after each generation
+    gp.userdata.user_fcn =  @tmobj.tmSelectPareto;
     
     if size(gp.userdata.x,1) ~= size(gp.userdata.y,1)
         error('There must be the same number of rows in gp.userdata.x and gp.userdata.y');
