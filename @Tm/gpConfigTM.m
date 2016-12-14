@@ -3,8 +3,8 @@ function gp = gpConfigTM(obj,gp)
     tmobj = Tm.getInstance;
 
     % runcontrol
-    gp.runcontrol.pop_size = 64; %population size
-    gp.runcontrol.num_gen = 1000; % number of generations - paper used 20000
+    gp.runcontrol.pop_size = 300; %population size
+    gp.runcontrol.num_gen = 300; % number of generations - paper used 20000
     gp.runcontrol.showBestInputs = true; 
     gp.runcontrol.showValBestInputs = true;
     gp.runcontrol.timeout = inf; %adjust?
@@ -13,9 +13,9 @@ function gp = gpConfigTM(obj,gp)
     gp.runcontrol.verbose = 100; 
     
     % selection - not mentioned in paper
-    gp.selection.tournament.size = 15;
-    gp.selection.tournament.p_pareto = 0.7;
-    gp.selection.elite_fraction = 0.3;
+    gp.selection.tournament.size = 10;
+    gp.selection.tournament.p_pareto = 0;
+    gp.selection.elite_fraction = 0.1;
     
     % fitness
     gp.fitness.minimisation = true;         %true to minimise the fitness function (if false it is maximised).
@@ -49,8 +49,8 @@ function gp = gpConfigTM(obj,gp)
     end
     
     % tree information (make it possibly deeper since we only have one tree)
-    gp.treedef.max_depth = 4;
-    gp.treedef.max_mutate_depth = 2;
+    gp.treedef.max_depth = 5;
+    gp.treedef.max_mutate_depth = 5;
     
     %genetic operators
     gp.operators.mutation.p_mutate = 0.03;    
@@ -65,7 +65,7 @@ function gp = gpConfigTM(obj,gp)
     % constants
     gp.nodes.const.p_ERC = 0.25; % probability of a constant instead of x
     gp.nodes.const.range = [-10 10]; % range of constants
-    gp.nodes.const.p_int = 0.5;
+    gp.nodes.const.p_int = 0.0;
     
     % multigene - NO
     gp.genes.multigene = false;
