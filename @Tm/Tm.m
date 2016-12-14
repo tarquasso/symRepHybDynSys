@@ -34,7 +34,7 @@ classdef (Sealed) Tm < handle
         gammatilde_k = getGammaTildeTrain(obj,k)
         gammatilde_k = getGammaTildeVal(obj,k)
         gammatilde_k = getGammaTildeTest(obj,k)
-
+        
         gp = gpConfigTM(obj,gp) %move to private methods?
     end
     
@@ -84,6 +84,8 @@ classdef (Sealed) Tm < handle
         fitness = transitionFitness(ypred,yactual,gammatilde);
         [fitness,gp] = tmFitfun(evalstr,gp)
         [valfitness,gp,ypredval] = tmFitfunValidate(gp)
+        ypred = predictDataTM(predictor,x,index)
+
     end
 end
 
