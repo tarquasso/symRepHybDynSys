@@ -34,13 +34,15 @@ classdef (Sealed) Tm < handle
         gammatilde_k = getGammaTildeTrain(obj,k)
         gammatilde_k = getGammaTildeVal(obj,k)
         gammatilde_k = getGammaTildeTest(obj,k)
-
+        
+        [valfitness,gp,ypredval] = updateParetoSet(obj,gp);
+        
         gp = gpConfigTM(obj,gp) %move to private methods?
     end
     
     methods (Access = private)
         [gp,index_pareto] = symRegTM(obj,k)
-        aic = computeAICTransitionFitness(obj,gp,index,k)
+        aic = computeAICTransitionFitness(obj,gp,index)
         [] = fUpdate(obj,k,ksub,gp,i_best);
     end
     
@@ -76,14 +78,21 @@ classdef (Sealed) Tm < handle
         
         f;
         
+        pareto_fit;
+        pareto_complex;
+        pareto_fstr;
+        
         runningTM;
         initiated;
     end
     
     methods (Static)
         fitness = transitionFitness(ypred,yactual,gammatilde);
-        [fitness,gp,theta,ypredtrain,fitnessTest,ypredtest,pvals,r2train,r2test,r2val,geneOutputs,geneOutputsTest,geneOutputsVal] = tmFitfun(evalstr,gp)
-        [valfitness,gp,ypredval] = tmFitfunValidate(gp)
+        [fitness,gp] = tmFitfun(evalstr,gp)
+        [valfitness,gp,ypredval] = tmSelectPareto(gp)
+        ypred = predictDataTM(predictor,x,index)
+        exprSym = tmPretty(gp,fstr)
+
     end
 end
 

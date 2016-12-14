@@ -47,6 +47,18 @@ title('Validation Data')
 newFilename = [name,'_train.mat'];
 save(newFilename,'m','u','y','K');
 
+
+figure(12); clf;
+plot(u,y,'.')
+axis([-2.5 2.5 -1.5 1.5])
+xlabel('u')
+ylabel('y')
+title('Hysteresis Relay Short')
+typeofPlot = 'u_y_m';
+options.Format = 'eps';
+hgexport(gcf,[name,'_',typeofPlot,'.eps'],options);
+
+
 %% Generate Test data: u values in different range
 transitions = 2;
 N = 10;

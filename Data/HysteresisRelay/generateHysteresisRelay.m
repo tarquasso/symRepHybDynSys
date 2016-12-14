@@ -1,5 +1,7 @@
 function generateHysteresisRelay()
 
+name = 'hysteresisRelay';
+
 K = 2;
 %% Generate Validation Set
 transitions = 66;
@@ -29,7 +31,7 @@ hold on
 plot(u,m,'ro')
 title('Training Data')
 
-newFilename = 'hysteresisRelay_val.mat';
+newFilename = [name,'_val.mat'];
 save(newFilename,'m','u','y','K');
 
 %% Generate Training Data: Add noise to u values
@@ -42,8 +44,18 @@ hold on
 plot(u,m,'ro')
 title('Validation Data')
 
-newFilename = 'hysteresisRelay_train.mat';
+newFilename = [name,'_train.mat'];
 save(newFilename,'m','u','y','K');
+
+figure(12); clf;
+plot(u,y,'.')
+axis([-2.5 2.5 -1.5 1.5])
+xlabel('u')
+ylabel('y')
+title('Hysteresis Relay')
+typeofPlot = 'u_y_m';
+options.Format = 'eps';
+hgexport(gcf,[name,'_',typeofPlot,'.eps'],options);
 
 %% Generate Test data: u values in different range
 transitions = 88;
@@ -71,7 +83,7 @@ plot(u,m,'ko')
 title('Test Data')
 transitionsTest = sum(abs(diff(m)));
 assert(transitionsTest == transitions,'not the amount of designed transitions');
-newFilename = 'hysteresisRelay_test.mat';
+newFilename = [name,'_test.mat'];
 save(newFilename,'m','u','y','K');
 
 end

@@ -1,4 +1,4 @@
-function  trans_k_ksub = getPredictedTransitionsTrain(obj,k)
+function  trans_k_ksub = getPredictedTransitionsTrain(obj,k,ksub)
 
 
 if nargin < 2

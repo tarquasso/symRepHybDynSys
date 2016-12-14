@@ -48,6 +48,16 @@ title('Validation Data')
 newFilename = [name,'_train.mat'];
 save(newFilename,'m','u','y','K');
 
+figure(12); clf;
+plot(u,y,'.')
+xlabel('u')
+ylabel('y')
+title('Hysteresis Loop')
+typeofPlot = 'u_y_m';
+options.Format = 'eps';
+hgexport(gcf,[name,'_',typeofPlot,'.eps'],options);
+  
+  
 %% Generate Test data: u values in different range
 transitions = 34;
 N = 4100;
@@ -74,6 +84,7 @@ plot(u,m,'ko')
 title('Test Data')
 transitionsTest = sum(abs(diff(m)));
 assert(transitionsTest == transitions,'not the amount of designed transitions');
+
 
 
 newFilename = [name,'_test.mat'];
