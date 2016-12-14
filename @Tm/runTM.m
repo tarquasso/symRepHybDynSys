@@ -42,10 +42,9 @@ for k = allKs
       aic(i) = obj.computeAICTransitionFitness(gp,i);
     end
     
-    % set behavior f_k to solution with lowest AIC score in sr_solution
+    % set transition t k→k ′ (u n ) to solution with lowest AIC score in tm_solutions
     [~,i_best] = min(aic);
     obj.fUpdate(k,ksub,gp,i_best);
-    % set transition t k→k ′ (u n ) to solution with lowest AIC score in tm_solutions
   end
   
   %return transitions t k→k ′ (u n )

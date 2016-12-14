@@ -1,10 +1,12 @@
 function [] = fUpdate(obj,k,ksub,gp,i_best)
 
-obj.f{k,ksub} = gppretty(gp,i_best);
+evalstr = gpreformat(gp,obj.f_str{i_best}); % get decoded function string
 
-obj.ypred_train(:,k,ksub) = obj.predictDataTM(gp,gp.userdata.xtrain,i_best);
-obj.ypred_test(:,k,ksub)  = obj.predictDataTM(gp,gp.userdata.xtest,i_best);
-obj.ypred_val(:,k,ksub)   = obj.predictDataTM(gp,gp.userdata.xval,i_best);
+obj.ypred_train(:,k,ksub) = obj.predictDataTM(evalstr,gp.userdata.xtrain);
+obj.ypred_test(:,k,ksub)  = obj.predictDataTM(evalstr,gp.userdata.xtest);
+obj.ypred_val(:,k,ksub)   = obj.predictDataTM(evalstr,gp.userdata.xval);
+
+% Our own version of gppretty to get symbolic, simplified equation out of it
+obj.f{k,ksub} = obj.tmPretty(evalstr);
 
 end
-

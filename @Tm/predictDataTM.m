@@ -14,7 +14,7 @@ elseif isa(predictor,'sym') && nargin == 2
     
 % In this case we already provide the cell array containing the function
 % char-array. This arises when we do the call to 'tree2evalstr' before
-% giving it to predictDataTM
+% giving it to predictDataTM (or call to 'gpreformat').
 elseif isa(predictor,'cell') && nargin == 2
     evalstr = predictor;
     
