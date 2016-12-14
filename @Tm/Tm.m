@@ -35,6 +35,8 @@ classdef (Sealed) Tm < handle
         gammatilde_k = getGammaTildeVal(obj,k)
         gammatilde_k = getGammaTildeTest(obj,k)
         
+        [valfitness,gp,ypredval] = updateParetoSet(obj,gp);
+        
         gp = gpConfigTM(obj,gp) %move to private methods?
     end
     
@@ -83,7 +85,7 @@ classdef (Sealed) Tm < handle
     methods (Static)
         fitness = transitionFitness(ypred,yactual,gammatilde);
         [fitness,gp] = tmFitfun(evalstr,gp)
-        [valfitness,gp,ypredval] = tmFitfunValidate(gp)
+        [valfitness,gp,ypredval] = tmSelectPareto(gp)
         ypred = predictDataTM(predictor,x,index)
 
     end
