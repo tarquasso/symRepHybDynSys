@@ -2,12 +2,13 @@ function gp = gpConfigTM(obj,gp)
 
     % runcontrol
     gp.runcontrol.pop_size = 64; %population size
-    gp.runcontrol.num_gen = 500; % number of generations - paper used 20000
+    gp.runcontrol.num_gen = 1000; % number of generations - paper used 20000
     gp.runcontrol.showBestInputs = true; 
     gp.runcontrol.showValBestInputs = true;
     gp.runcontrol.timeout = 30; %adjust?
     gp.runcontrol.runs = 1; %single run per transition
     gp.runcontrol.parallel.auto = false; %potentially faster
+    gp.runcontrol.verbose = 100; 
     
     % selection - not mentioned in paper
     gp.selection.tournament.size = 15;
@@ -24,13 +25,13 @@ function gp = gpConfigTM(obj,gp)
     gp.nodes.inputs.num_inp = 1; 		         
 
     % multigene
-    gp.genes.max_genes = 6;
+    gp.genes.max_genes = 2;
     
     % constants
     gp.nodes.const.p_ERC = 0.05;
     
     % tree information
-    gp.treedef.max_depth = 4;
+    gp.treedef.max_depth = 3;
     
     % data
     gp.userdata.xtrain = obj.x_train;
