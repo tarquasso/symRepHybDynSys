@@ -32,16 +32,12 @@ for k = allKs
     % These calculate gammaTilde_train and gammaTilde_val
     
     % tm_solutions = symbolic_regression(Equation 17, Equation 18)
-    [gp,index_pareto] = obj.symRegTM(); % returns pareto set
+    gp = obj.symRegTM(); % pareto set is kept in object
     
     % for each solution in tm_solutions :
-    pop = size(index_pareto,1);
-    aic = zeros(pop,1);
-    aic(index_pareto == 0) = Inf; %for all solutions with 0 in index_pareto, set aic to infinity
-    for i = 1:pop
-      if index_pareto(i) == 0
-        continue;
-      end
+    par_size = size(obj.pareto_fit,1);
+    aic = zeros(par_size,1);
+    for i = 1:par_size
       % compute AIC score using transition fitness (Equation 18)
       aic(i) = obj.computeAICTransitionFitness(gp,i);
     end

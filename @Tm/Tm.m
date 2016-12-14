@@ -42,7 +42,7 @@ classdef (Sealed) Tm < handle
     
     methods (Access = private)
         [gp,index_pareto] = symRegTM(obj,k)
-        aic = computeAICTransitionFitness(obj,gp,index,k)
+        aic = computeAICTransitionFitness(obj,gp,index)
         [] = fUpdate(obj,k,ksub,gp,i_best);
     end
     
