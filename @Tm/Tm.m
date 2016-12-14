@@ -82,7 +82,7 @@ classdef (Sealed) Tm < handle
     
     methods (Static)
         fitness = transitionFitness(ypred,yactual,gammatilde);
-        [fitness,gp,theta,ypredtrain,fitnessTest,ypredtest,pvals,r2train,r2test,r2val,geneOutputs,geneOutputsTest,geneOutputsVal] = tmFitfun(evalstr,gp)
+        [fitness,gp] = tmFitfun(evalstr,gp)
         [valfitness,gp,ypredval] = tmFitfunValidate(gp)
     end
 end

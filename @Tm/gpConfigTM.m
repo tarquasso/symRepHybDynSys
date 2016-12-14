@@ -58,7 +58,7 @@ function gp = gpConfigTM(obj,gp)
     
     
     %enables hold out validation set
-    gp.userdata.user_fcn =  @tmobj.tmFitfunValidate;
+    %gp.userdata.user_fcn =  @tmobj.tmFitfunValidate;
     
     % variable names
     %gp.nodes.inputs.names = {'z','dz','theta','dtheta'};
