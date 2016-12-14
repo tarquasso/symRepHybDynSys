@@ -4,7 +4,7 @@ function gp = gpConfigTM(obj,gp)
 
     % runcontrol
     gp.runcontrol.pop_size = 64; %population size
-    gp.runcontrol.num_gen = 200; % number of generations - paper used 20000
+    gp.runcontrol.num_gen = 1000; % number of generations - paper used 20000
     gp.runcontrol.showBestInputs = true; 
     gp.runcontrol.showValBestInputs = true;
     gp.runcontrol.timeout = inf; %adjust?
@@ -16,7 +16,6 @@ function gp = gpConfigTM(obj,gp)
     gp.selection.tournament.size = 15;
     gp.selection.tournament.p_pareto = 0.7;
     gp.selection.elite_fraction = 0.3;
-    gp.nodes.const.p_int = 0.5;
     
     % fitness
     gp.fitness.minimisation = true;         %true to minimise the fitness function (if false it is maximised).
@@ -66,6 +65,7 @@ function gp = gpConfigTM(obj,gp)
     % constants
     gp.nodes.const.p_ERC = 0.25; % probability of a constant instead of x
     gp.nodes.const.range = [-10 10]; % range of constants
+    gp.nodes.const.p_int = 0.5;
     
     % multigene - NO
     gp.genes.multigene = false;

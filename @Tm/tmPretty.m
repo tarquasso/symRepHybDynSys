@@ -1,10 +1,11 @@
-function exprSym = tmPretty(evalstr)
+function exprSym = tmPretty(gp,fstr)
 % NOTE: input must be return value from call to 'gpreformat'
 
 verReallyOld = 0;
 simplifySteps = 100;
 
 %construct full symbolic expression
+evalstr = gpreformat(gp,fstr);
 fullExpr = sym(evalstr{1});
 
 %simplify the overall expression

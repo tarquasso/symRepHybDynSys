@@ -91,7 +91,7 @@ classdef (Sealed) Tm < handle
         [fitness,gp] = tmFitfun(evalstr,gp)
         [valfitness,gp,ypredval] = tmSelectPareto(gp)
         ypred = predictDataTM(predictor,x,index)
-        exprSym = tmPretty(f_str)
+        exprSym = tmPretty(gp,fstr)
 
     end
 end

@@ -10,11 +10,11 @@ if isa(predictor,'struct') && nargin == 3
 % cannot give an index, which model we should use. The appropriate sym
 % object must be checked for beforehand when calling it.
 elseif isa(predictor,'sym') && nargin == 2
-    evalstr{1} = f;
+    evalstr{1} = f; % don't know if that is going work to the dimensions
     
 % In this case we already provide the cell array containing the function
 % char-array. This arises when we do the call to 'tree2evalstr' before
-% giving it to predictDataTM (or call to 'gpreformat').
+% giving it to predictDataTM.
 elseif isa(predictor,'cell') && nargin == 2
     evalstr = predictor;
     

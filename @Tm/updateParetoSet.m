@@ -39,8 +39,15 @@ valfitness = [valfitness;obj.pareto_fit];
 complexity = [complexity;obj.pareto_complex];
 fpop = [fstr ; obj.pareto_fstr];
 
+% remove doubles from pareto set
+criterion = [valfitness complexity];
+[criterion,ic] = unique(criterion,'rows','stable');
+valfitness = valfitness(ic);
+complexity = complexity(ic);
+fpop = fpop(ic);
+
 % find new overall pareto set
-index_pareto = ndfsort_rank1([valfitness complexity]);
+index_pareto = logical(ndfsort_rank1(criterion));
 obj.pareto_fit = valfitness(index_pareto);
 obj.pareto_complex = complexity(index_pareto);
 obj.pareto_fstr = fpop(index_pareto);
