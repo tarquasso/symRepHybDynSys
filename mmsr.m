@@ -3,6 +3,8 @@
 % https://en.wikipedia.org/wiki/Mooney%E2%80%93Rivlin_solid
 % https://en.wikipedia.org/wiki/Neo-Hookean_solid
 
+% clear all, close all, clc
+
 addpath('gptips2')
 t.TimeZone = 'America/New_York';
 
@@ -119,14 +121,14 @@ tmObj.runTM();
 %% Evaluate the outputs
 k=1;
 ksub=2;
-f_1_2 = tmObj.getAlgebraicFunction(k,ksub);
+f_1_2 = tmObj.getAlgebraicFunction(k,ksub)
 transTrain_1_2 = tmObj.getPredictedTransitionsTrain(k,ksub);
 transVal_1_2 = tmObj.getPredictedTransitionsVal(k,ksub);
 transTest_1_2 = tmObj.getPredictedTransitionsTest(k,ksub);
 
 k=2;
 ksub=1;
-f_2_1 = tmObj.getAlgebraicFunction(k,ksub);
+f_2_1 = tmObj.getAlgebraicFunction(k,ksub)
 transTrain_2_1 = tmObj.getPredictedTransitionsTrain(k,ksub);
 transVal_2_1 = tmObj.getPredictedTransitionsVal(k,ksub);
 transTest_2_1 = tmObj.getPredictedTransitionsTest(k,ksub);
