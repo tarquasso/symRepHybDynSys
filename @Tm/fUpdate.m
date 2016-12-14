@@ -1,10 +1,10 @@
 function [] = fUpdate(obj,k,ksub,gp,i_best)
 
-obj.f{k,ksub} = gpmodel2sym(gp,i_best);
-gpmodel = gpmodel2struct(gp,i_best);
-obj.ypred_train(:,k,ksub) = gpmodel.train.ypred;
-obj.ypred_test(:,k,ksub)  = gpmodel.test.ypred;
-obj.ypred_val(:,k,ksub)   = gpmodel.val.ypred;
+obj.f{k,ksub} = gppretty(gp,i_best);
+
+obj.ypred_train(:,k,ksub) = obj.predictDataTM(gp,gp.userdata.xtrain,i_best);
+obj.ypred_test(:,k,ksub)  = obj.predictDataTM(gp,gp.userdata.xtest,i_best);
+obj.ypred_val(:,k,ksub)   = obj.predictDataTM(gp,gp.userdata.xval,i_best);
 
 end
 
