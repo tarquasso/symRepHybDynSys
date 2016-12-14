@@ -14,8 +14,8 @@ gammatilde_val = obj.getGammaTildeVal(obj.k_current); %prior transition get gamm
 
 
 for p=1:pop
-    ypredval = Tm.predictDataTM(gp,gp.userdata.x_val,p);
-    valfitness(p) = Tm.transitionFitness(ypredval,gp.userdata.y_val,gammatilde_val);
+    ypredval = Tm.predictDataTM(gp,gp.userdata.xval,p);
+    valfitness(p) = Tm.transitionFitness(ypredval,gp.userdata.yval,gammatilde_val);
 end
 
 % find pareto front as 0,1-vector
