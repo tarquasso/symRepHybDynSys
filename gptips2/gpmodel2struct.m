@@ -100,7 +100,7 @@ if nargin < 2
 end
 
 if ~strncmpi('regressmulti',func2str(gp.fitness.fitfun),12)
-%     error('GPMODEL2STRUCT may only be used to extract model data from a GP structure with a population containing multigene symbolic regression models.');
+     error('GPMODEL2STRUCT may only be used to extract model data from a GP structure with a population containing multigene symbolic regression models.');
 end
 
 if nargin < 6 || isempty(fastSymMode)
