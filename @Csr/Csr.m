@@ -37,7 +37,7 @@ classdef (Sealed) Csr < handle
     end
     
     methods (Access = private)
-        [gp,index_pareto] = symReg(obj,k)
+        gp = symReg(obj)
         aic = computeLocalAIC(obj,gp,index,k)
         aic = computeAIC(obj,gp,index,k)
         ecsr_k = kAbsError(obj,ypred,yactual,weights);

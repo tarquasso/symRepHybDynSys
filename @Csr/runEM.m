@@ -24,7 +24,7 @@ for k = 1:obj.K
     obj.k_current = k;
     
     % sr_solutions = symbolic_regression(y_n = f_k(u_n),fitfunc)
-    [gp,index_pareto] = obj.symReg(k); % returns pareto set
+    gp = obj.symReg(); % returns pareto set
     
     % check out best solution
     pop = size(index_pareto,1);
@@ -69,7 +69,7 @@ while notConverged % TODO: add convergence criterion
 
         % # MAXIMIZATION STEP #
         % sr_solutions = symbolic_regression(y_n = f_k(u_n),fitfunc)
-        [gp,index_pareto] = obj.symReg(k); % returns pareto set
+        gp = obj.symReg(); % returns pareto set
         
         % for each solution in sr_solutions :
         pop = size(index_pareto,1);
