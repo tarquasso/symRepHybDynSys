@@ -16,33 +16,21 @@ if(true)
 [dataTrain,dataVal,dataTest] = loadSoftRubberData();
 
 K = 2;
-% dataTrain.tAll
-NTrain = length(dataTrain.zAll);
-xTrain = [dataTrain.zAll];%,dataTrain.zdAll];
+
+xTrain = [dataTrain.zAll,dataTrain.zdAll];
 yTrain = dataTrain.zddAll;
+NTrain = length(yTrain);
 modeTrain = dataTrain.mode; % 1 is in the air, 2 is in contact
-
-NVal = length(dataVal.zAll);
-xVal = [dataVal.zAll];%,dataVal.zdAll];
-yVal = dataVal.zddAll;
-modeVal = dataVal.mode; % 1 is in the air, 2 is in contact
-
-NTest = length(dataTest.zAll);
-xTest = [dataTest.zAll];%,dataTest.zdAll];
-yTest = dataTest.zddAll;
-modeTest = dataTest.mode; % 1 is in the air, 2 is in contact
-
-xTest = [dataTest.zAll,dataTest.zdAll];
-yTest = dataTest.zddAll;
-mTest = dataTest.mode; % 1 is in the air, 2 is in contact
 
 xVal = [dataVal.zAll,dataVal.zdAll];
 yVal = dataVal.zddAll;
-mVal = dataVal.mode; % 1 is in the air, 2 is in contact
-
-NTrain = length(yTrain);
-NTest  = length(yTest);
 NVal = length(yVal);
+modeVal = dataVal.mode; % 1 is in the air, 2 is in contact
+
+xTest = [dataTest.zAll,dataTest.zdAll];
+yTest = dataTest.zddAll;
+NTest  = length(yTest);
+modeTest = dataTest.mode; % 1 is in the air, 2 is in contact
 
 else
   
@@ -52,30 +40,29 @@ else
 % Synthetic Data Case
 %[dataTrain,dataVal,dataTest] = loadHysteresisRelayData();
 % [dataTrain,dataVal,dataTest] = loadHysteresisRelayShortData();
- [dataTrain,dataVal,dataTest] = loadContinuousHysteresisLoopData();
+[dataTrain,dataVal,dataTest] = loadContinuousHysteresisLoopData();
 
-
-NTrain = length(dataTrain.u);
 K = dataTrain.K; %2
 xTrain = dataTrain.u'; % one dimension u values
 yTrain = dataTrain.y';
+NTrain = length(yTrain);
 modeTrain = dataTrain.m'; %for comparision
 
-NVal = length(dataVal.u);
 xVal = dataVal.u'; % one dimension u values
 yVal = dataVal.y';
+NVal = length(yVal);
 modeVal = dataVal.m'; %for comparision
 
-NTest = length(dataTest.u);
 xTest = dataTest.u'; % one dimension u values
 yTest = dataTest.y';
+NTest = length(yTest);
 modeTest = dataTest.m'; %for comparision
 
 end
 
 %% CSR
 
-if(true)
+if(false)
 
 %% Set up Init File
 initCsr.x_train = xTrain;
@@ -123,7 +110,6 @@ gammaTest((modeTest == 2),2) = 1;
 end
 %%
 figure(1); clf;
-<<<<<<< HEAD
 plot(1:NTrain,gammaTrain(:,1),'-..')
 title('Gama Train')
 
@@ -136,15 +122,15 @@ plot(1:NTest,gammaTest(:,1),'-..')
 title('Gama Test')
 %
 
-if(false)
+if(true)
 %% Set up Init File
-initTm.x_train = xTrain;
+initTm.x_train = xTrain(:,1);
 initTm.y_train = gammaTrain; % seprate it out in runTM
 
-initTm.x_val = xVal;
+initTm.x_val = xVal(:,1);
 initTm.y_val = gammaVal;
 
-initTm.x_test = xTest;
+initTm.x_test = xTest(:,1);
 initTm.y_test = gammaTest;
 
 initTm.K = K;
