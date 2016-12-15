@@ -88,6 +88,7 @@ classdef (Sealed) Csr < handle
         [fitness,gp] = csrFitfun(evalstr,gp);
         fitness = computeFitness(weights,y,ypred);
         [valfitness,gp,ypredval] = csrSelectPareto(gp)
+        exprSym = csrPretty(gp,fstr)
     end
 end
 
