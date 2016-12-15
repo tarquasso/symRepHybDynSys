@@ -7,7 +7,7 @@ yhatk = obj.predictData(gp,obj.x_val,index);
 gammahatk = obj.computeGammaHat(k,obj.var_val,obj.x_val,yactual,yhatk);
 
 % compute global fitness using temporary values - E_csr (Equation 2)
-yhat = obj.predictData('all','val');
+yhat = obj.getAllPredictions('val');
 weights = obj.getWeightsVal('all');
 weights(k,:) = gammahatk;
 yhat(:,k) = yhatk;

@@ -10,7 +10,7 @@ n = size(y,1);
 % var_large = n x k
 % prob = n x k
 % gamma = 1 x n
-yhat = obj.predictData('all',x);
+yhat = obj.getAllPredictions(x);
 y_large = repmat(y,1,obj.K);
 var_large = repmat(var',n,1);
 

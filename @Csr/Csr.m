@@ -35,7 +35,7 @@ classdef (Sealed) Csr < handle
         [valfitness,gp,ypredval] = updateParetoSet(obj,gp);
     end
     
-    methods (Access = private)
+    methods (Access = public) %(Access = private)
         gp = symReg(obj)
         
         aic = computeLocalAIC(obj,gp,index,k)
@@ -54,10 +54,12 @@ classdef (Sealed) Csr < handle
         gamma = computeGamma(obj,k,var,x,y);
         gamma = computeGammaHat(obj,k,var,x,y,yhatk);
         
+        ypred = getAllPredictions(x);
+        
         [] = fUpdate(obj,k,gp,i_best);
     end
     
-    properties (Access = private)
+    properties (Access = public) % (Access = private)
         x_train;
         y_train;
         x_test;
