@@ -9,7 +9,8 @@ check_real = all( isreal( ypred(:) ));
 
 if check_size && check_valid && check_real
     %calculate weighted, mean logarithmic error
-    fitness = ( weights*log(1+abs(y - ypred)) ) / sum(weights);
+    abserr = abs(y - ypred);
+    fitness = ( weights*log(1+abserr) )  / sum(weights);
 else    
     fitness = inf;   
     %   warning('Invalid predictions, setting fitness to Inf');    
