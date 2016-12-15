@@ -25,12 +25,11 @@ classdef (Sealed) Csr < handle
     methods (Access = public)
         [] = initiateCsr(obj,init); % initiate CSR class instance  
         [f,var] = runEM(obj);
+        
         gamma_k = getWeightsTrain(obj,k);
         gamma_k = getWeightsTest(obj,k);
         gamma_k = getWeightsVal(obj,k);
-        gamma = getAllWeightsTrain(obj);
-        gamma = getAllWeightsTest(obj);
-        gamma = getAllWeightsVal(obj);
+        
         gp = gpConfig(obj,gp) %move to private methods?
         
         [valfitness,gp,ypredval] = updateParetoSet(obj,gp);
