@@ -39,9 +39,9 @@ for k = 1:obj.K
     % convert into symbolic equation since it allows flexible value assignment
     
     % set variance for each behavior - sigma^2_k (Equation 5)
-    obj.var_train(k) = obj.computeVar(k,gp,i_best,'train'); % on training set!!
-    obj.var_test(k)  = obj.computeVar(k,gp,i_best,'test');
-    obj.var_val(k)   = obj.computeVar(k,gp,i_best,'val');
+    obj.var_train(k) = obj.computeVar(k,'train'); % on training set!!
+    obj.var_test(k)  = obj.computeVar(k,'test');
+    obj.var_val(k)   = obj.computeVar(k,'val');
      
 end
 
@@ -80,9 +80,9 @@ while notConverged
         obj.fUpdate(k,gp,i_best);
         
         % set variance for each behavior - sigma^2_k (Equation 5)
-        obj.var_train(k) = obj.computeVar(k,gp,i_best,'train'); % on training set!!
-        obj.var_test(k)  = obj.computeVar(k,gp,i_best,'test');
-        obj.var_val(k)   = obj.computeVar(k,gp,i_best,'val');
+        obj.var_train(k) = obj.computeVar(k,'train'); % on training set!!
+        obj.var_test(k)  = obj.computeVar(k,'test');
+        obj.var_val(k)   = obj.computeVar(k,'val');
         % #####################
         
     end
@@ -99,9 +99,17 @@ while notConverged
         lastImprovement = lastImprovement + 1;
     end
     
-    if lastImprovement > 4
+    if lastImprovement > 4 || ecsr < 1e-10
         notConverged = false;
     end
+    
+    
+    disp('CURRENT METRICS:')
+    disp(['Lowest error: ' num2str(ecsr) ', last Improvement: ', num2str(lastImprovement)]);
+    disp('Current functions: ');
+    disp(obj.f{1});
+    disp(obj.f{2});
+    disp(['Converged? --> ',num2str(~notConverged)]);
     
 end
 

@@ -8,10 +8,10 @@
 addpath('gptips2')
 t.TimeZone = 'America/New_York';
 
-%% Data Parsing
+% Data Parsing
 
-if(false)
-%% Rubber Data Case
+if(true)
+% Rubber Data Case
 [dataTrain,dataVal,dataTest] = loadSoftRubberData();
 
 K = 2;
@@ -20,12 +20,24 @@ xTrain = [dataTrain.zAll,dataTrain.zdAll];
 yTrain = dataTrain.zddAll;
 mTrain = dataTrain.mode; % 1 is in the air, 2 is in contact
 
+xTest = [dataTest.zAll,dataTest.zdAll];
+yTest = dataTest.zddAll;
+mTest = dataTest.mode; % 1 is in the air, 2 is in contact
+
+xVal = [dataVal.zAll,dataVal.zdAll];
+yVal = dataVal.zddAll;
+mVal = dataVal.mode; % 1 is in the air, 2 is in contact
+
+NTrain = length(yTrain);
+NTest  = length(yTest);
+NVal = length(yVal);
+
 else
   
-%% Synthetic Data Case
-[dataTrain,dataVal,dataTest] = loadHysteresisRelayData();
+% Synthetic Data Case
+%[dataTrain,dataVal,dataTest] = loadHysteresisRelayData();
 % [dataTrain,dataVal,dataTest] = loadHysteresisRelayShortData();
-% [dataTrain,dataVal,dataTest] = loadContinuousHysteresisLoopData();
+ [dataTrain,dataVal,dataTest] = loadContinuousHysteresisLoopData();
 
 NTrain = length(dataTrain.u);
 K = dataTrain.K; %2
@@ -47,7 +59,7 @@ end
 
 %% CSR
 
-if(false)
+if(true)
 
 %% Set up Init File
 initCsr.x_train = xTrain;
@@ -64,11 +76,18 @@ initCsr.K = K;
 csrObj = Csr.getInstance();
 csrObj.initiateCsr(initCsr);
 
-% [functions,variances] = csrObj.runEM();
+[functions,variances] = csrObj.runEM();
 
-gammaTrain = csrObj.gamma_train;
-gammaVal = csrObj.gamma_val;
-gammaTest = csrObj.gamma_test;    
+% one hot encoding of modes
+[~,gammaTrain] = max(csrObj.gamma_train,[],1);
+[~,gammaVal] = max(csrObj.gamma_val,[],1);
+[~,gammaTest] = max(csrObj.gamma_test,[],1);
+gammaTrain = gammaTrain';
+gammaVal = gammaVal';
+gammaTest = gammaTest';
+
+csrObj.f{1}
+csrObj.f{2}
 
 else
   
@@ -86,19 +105,21 @@ gammaTest((modeTest == 1),1) = 1;
 gammaTest((modeTest == 2),2) = 1;
 
 end
-
+%%
 figure(1); clf;
-plot(1:NTrain,gammaTrain,'-..')
+plot(1:NTrain,gammaTrain','-..')
 title('Gama Train')
 
 figure(2); clf;
-plot(1:NVal,gammaVal,'-..')
+plot(1:NVal,gammaVal','-..')
 title('Gama Validation')
 
 figure(3); clf;
-plot(1:NTest,gammaTest,'-..')
+plot(1:NTest,gammaTest','-..')
 title('Gama Test')
+%
 
+if(false)
 %% Set up Init File
 initTm.x_train = xTrain;
 initTm.y_train = gammaTrain; % seprate it out in runTM
@@ -132,3 +153,5 @@ f_2_1 = tmObj.getAlgebraicFunction(k,ksub)
 transTrain_2_1 = tmObj.getPredictedTransitionsTrain(k,ksub);
 transVal_2_1 = tmObj.getPredictedTransitionsVal(k,ksub);
 transTest_2_1 = tmObj.getPredictedTransitionsTest(k,ksub);
+
+end

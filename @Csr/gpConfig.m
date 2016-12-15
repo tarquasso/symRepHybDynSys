@@ -2,13 +2,14 @@ function gp = gpConfig(obj,gp)
     
     % runcontrol
     gp.runcontrol.pop_size = 64; %population size
-    gp.runcontrol.num_gen = 500; % number of generations - paper used 20000
+    gp.runcontrol.num_gen = 12000; % number of generations - paper used 20000
     gp.runcontrol.showBestInputs = true; 
     gp.runcontrol.showValBestInputs = true;
     gp.runcontrol.timeout = inf; %adjust?
     gp.runcontrol.runs = 1; %single run per transition
     gp.runcontrol.parallel.auto = false; %potentially faster
-    gp.runcontrol.verbose = 100; 
+    gp.runcontrol.verbose = 1000; 
+    gp.runcontrol.quiet = false;
     
     % selection - not mentioned in paper
     gp.selection.tournament.size = 8;
@@ -47,8 +48,8 @@ function gp = gpConfig(obj,gp)
     end
     
     % tree information (make it possibly deeper since we only have one tree)
-    gp.treedef.max_depth = 5;
-    gp.treedef.max_mutate_depth = 5;
+    gp.treedef.max_depth = 6;
+    gp.treedef.max_mutate_depth = 6;
     
     %genetic operators
     gp.operators.mutation.p_mutate = 0.03;    
@@ -63,7 +64,7 @@ function gp = gpConfig(obj,gp)
     % constants
     gp.nodes.const.p_ERC = 0.25; % probability of a constant instead of x
     gp.nodes.const.range = [-10 10]; % range of constants
-    gp.nodes.const.p_int = 0.0;
+    gp.nodes.const.p_int = 0.01;
     
     % multigene - NO
     gp.genes.multigene = false;
