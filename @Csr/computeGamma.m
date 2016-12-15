@@ -1,4 +1,4 @@
-function gamma = computeGamma(obj,k,var,x,y)
+function gammak = computeGamma(obj,k,var,x,y)
 % compute gammas for one k and all data points n as row vector
 
 n = size(y,1);
@@ -15,7 +15,7 @@ y_large = repmat(y,1,obj.K);
 var_large = repmat(var',n,1);
 
 prob = normpdf(y_large,yhat,var_large);
-gamma = ( prob(:,k)./sum(prob,2) )';
+gammak = ( prob(:,k)./sum(prob,2) )';
 
 end
 

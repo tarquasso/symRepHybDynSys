@@ -51,8 +51,8 @@ classdef (Sealed) Csr < handle
         yhat = fullPrediction(obj,x); % predict data according to mixture model
         yhat = maxPrediction(obj,x); % predict data according to most likely membership
         
-        gamma = computeGamma(obj,k,var,x,y);
-        gamma = computeGammaHat(obj,k,var,x,y,yhatk);
+        gammak = computeGamma(obj,k,var,x,y);
+        gammak = computeGammaHat(obj,k,var,x,y,yhatk);
         
         ypred = getAllPredictions(x,k);
         
