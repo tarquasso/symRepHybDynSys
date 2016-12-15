@@ -23,29 +23,43 @@ classdef (Sealed) Csr < handle
     
     %other methods
     methods (Access = public)
-        [] = initiateCsr(obj,init) % initiate CSR class instance  
-        [f,var] = runEM(obj)
-        gamma_k = getWeightsTrain(obj,k)
-        gamma_k = getWeightsTest(obj,k)
-        gamma_k = getWeightsVal(obj,k)    
+        [] = initiateCsr(obj,init); % initiate CSR class instance  
+        [f,var] = runEM(obj);
+        
+        gamma_k = getWeightsTrain(obj,k);
+        gamma_k = getWeightsTest(obj,k);
+        gamma_k = getWeightsVal(obj,k);
+        
         gp = gpConfig(obj,gp) %move to private methods?
+        
+        [valfitness,gp,ypredval] = updateParetoSet(obj,gp);
     end
     
-    methods (Access = private)
-        [gp,index_pareto] = symReg(obj,k)
+    methods (Access = public) %(Access = private)
+        gp = symReg(obj)
+        
         aic = computeLocalAIC(obj,gp,index,k)
         aic = computeAIC(obj,gp,index,k)
+        
         ecsr_k = kAbsError(obj,ypred,yactual,weights);
         ecsr_k = kQuadError(obj,ypred,yactual,weights);
+        
         ecsr = absError(obj,ypred,yactual,weights);
+        
         vark = computeVar(obj,k,gp,i,set,gamma);
-        yhat = predictData(obj,k,x);
-        gamma = computeGamma(obj,k,var,x,y);
-        gamma = computeGammaHat(obj,k,var,x,y,yhatk);
+
+        yhat = fullPrediction(obj,x); % predict data according to mixture model
+        yhat = maxPrediction(obj,x); % predict data according to most likely membership
+        
+        gammak = computeGamma(obj,k,var,x,y);
+        gammak = computeGammaHat(obj,k,var,x,y,yhatk);
+        
+        ypred = getAllPredictions(obj,x,k);
+        
         [] = fUpdate(obj,k,gp,i_best);
     end
     
-    properties (Access = private)
+    properties (Access = public) % (Access = private)
         x_train;
         y_train;
         x_test;
@@ -69,13 +83,20 @@ classdef (Sealed) Csr < handle
         var_test;
         var_val;
         
+        pareto_fstr;
+        pareto_fit;
+        pareto_complex;
+        
         runningEM;
         initiated;
     end
     
     methods (Static)
-        [fitness,gp,theta,ypredtrain,fitnessTest,ypredtest,pvals,r2train,r2test,r2val,geneOutputs,geneOutputsTest,geneOutputsVal]=csrFitfun(evalstr,gp)
-        [valfitness,gp,ypredval] = csrFitfunValidate(gp)
+        [fitness,gp] = csrFitfun(evalstr,gp);
+        fitness = computeFitness(weights,y,ypred);
+        [valfitness,gp,ypredval] = csrSelectPareto(gp);
+        exprSym = csrPretty(gp,fstr);
+        ypred = predictData(predictor,x,index);
     end
 end
 

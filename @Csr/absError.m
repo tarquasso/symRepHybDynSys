@@ -6,7 +6,7 @@ function ecsr = absError(obj,ypred,yactual,weights)
 % weights = k x n
 % E_csr = sum_k sum_n gamma_kn*abs(y_n - ypred_kn)
 
-err = abs(ypred - repmat(yactual,1,obj.k));
+err = abs(ypred - repmat(yactual,1,obj.K));
 ecsr_kn = weights.*err';
 ecsr = sum(ecsr_kn(:));
 

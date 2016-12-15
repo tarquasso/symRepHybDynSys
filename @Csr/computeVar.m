@@ -1,25 +1,22 @@
-function vark = computeVar(obj,k,gp,i,set,gamma)
+function vark = computeVar(obj,k,set,gamma)
 % compute var for one mode  k.
 
 if strcmpi(set,'val')
     
     weightsk = obj.getWeightsVal(k);
-    gpmodel = gpmodel2struct(gp,i);
-    ypred = gpmodel.val.ypred;
+    ypred = obj.getAllPredictions('val',k);
     yactual = obj.y_val;
     
 elseif strcmpi(set,'test')
     
     weightsk = obj.getWeightsTest(k);
-    gpmodel = gpmodel2struct(gp,i);
-    ypred = gpmodel.test.ypred;
+    ypred = obj.getAllPredictions('test',k);
     yactual = obj.y_test;
     
 else % compute variance for training set 
     
     weightsk = obj.getWeightsTrain(k);
-    gpmodel = gpmodel2struct(gp,i);
-    ypred = gpmodel.train.ypred;
+    ypred = obj.getAllPredictions('train',k);
     yactual = obj.y_train;
     
 end
@@ -33,6 +30,10 @@ end
 % eq.5 to calculate variance of mode k
 ecsr_k = obj.kQuadError(ypred,yactual,weightsk); % last part of the equation
 vark = ( sum(weightsk)/(sum(weightsk).^2 - sum(weightsk.^2)) ) * ecsr_k;
+
+if vark < 1e-5 || isnan(vark)
+    vark = 1e-5;
+end
 
 end
 

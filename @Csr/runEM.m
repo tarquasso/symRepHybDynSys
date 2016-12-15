@@ -16,54 +16,40 @@ errorMsg = 'You cannot start the EM-algorithm twice! Aborting';
 assert(obj.runningEM == false,errorMsg);
 obj.runningEM = true;
 
-% initialize and normalize random membership values
-% normalize each column of gamma so the sum of columns is 1: 
-obj.gamma_train = rand(obj.K,size(obj.y_train,1));
-obj.gamma_train = obj.gamma_train./repmat(sum(obj.gamma_train),obj.K,1);
-
-%see above
-obj.gamma_test = rand(obj.K,size(obj.y_test,1));
-obj.gamma_test = obj.gamma_test./repmat(sum(obj.gamma_test),obj.K,1);
-
-%see above
-obj.gamma_val = rand(obj.K,size(obj.y_val,1));
-obj.gamma_val = obj.gamma_val./repmat(sum(obj.gamma_val),obj.K,1);
+% initialize random membership values
+% see initiateCsr.m
 
 % for each behavior in K modes :
 for k = 1:obj.K
     obj.k_current = k;
     
     % sr_solutions = symbolic_regression(y_n = f_k(u_n),fitfunc)
-    [gp,index_pareto] = obj.symReg(k); % returns pareto set
+    gp = obj.symReg(); % returns pareto set
     
     % check out best solution
-    pop = size(index_pareto,1);
-    aic = zeros(pop,1);
-    aic(index_pareto == 0) = Inf; %can't be a solution
-        for i = 1:pop
-            if index_pareto(i) == 0 
-                continue; %skip it, see above
-            end
+    par_size = size(obj.pareto_fit,1);
+    aic = zeros(par_size,1);
+    for i = 1:par_size
             aic(i) = obj.computeLocalAIC(gp,i,k); %for all with index = 1, compute AIC
-        end
-    
+    end
+        
     % set behavior f_k to solution with lowest local AIC score in sr_solutions
     [~,i_best] = min(aic); % only need index of aic vector
     obj.fUpdate(k,gp,i_best); % take the best and format into symbolic eq
     % convert into symbolic equation since it allows flexible value assignment
     
     % set variance for each behavior - sigma^2_k (Equation 5)
-    obj.var_train(k) = obj.computeVar(k,gp,i_best,'train'); % on training set!!
-    obj.var_test(k)  = obj.computeVar(k,gp,i_best,'test');
-    obj.var_val(k)   = obj.computeVar(k,gp,i_best,'val');
+    obj.var_train(k) = obj.computeVar(k,'train'); % on training set!!
+    obj.var_test(k)  = obj.computeVar(k,'test');
+    obj.var_val(k)   = obj.computeVar(k,'val');
      
 end
 
-last_ecsr = Inf;
+last_ecsr = realmax;
 lastImprovement = 0;
 notConverged = true;
 % while convergence is not achieved :
-while notConverged % TODO: add convergence criterion
+while notConverged 
     
     % for each behavior in K modes :
     for k = 1:obj.K
@@ -79,69 +65,51 @@ while notConverged % TODO: add convergence criterion
 
         % # MAXIMIZATION STEP #
         % sr_solutions = symbolic_regression(y_n = f_k(u_n),fitfunc)
-        [gp,index_pareto] = obj.symReg(k); % returns pareto set
+        gp = obj.symReg(); % returns pareto set
         
         % for each solution in sr_solutions :
-        pop = size(index_pareto,1);
-        aic = zeros(pop,1);
-        aic(index_pareto == 0) = Inf; %for all solutions with 0 in index_pareto, set aic to infinity
-        varhat_k = cell(pop,1);
-        for i = 1:pop
-            if index_pareto(i) == 0
-                continue;
-            end
-
-            % compute AIC score using global fitness (Equation 8)
-            [aic(i),varhat_k{i}] = obj.computeAIC(gp,i,k);
-        end        
+        par_size = size(obj.pareto_fit,1);
+        aic = zeros(par_size,1);
+        for i = 1:par_size
+            % compute AIC score using transition fitness (Equation 18)
+            aic(i) = obj.computeAIC(gp,i,k);
+        end
         
         % set behavior f_k to solution with lowest AIC score in sr_solution
         [~,i_best] = min(aic);
         obj.fUpdate(k,gp,i_best);
         
-        
-        % "update weights (key: greedy implementation, in the next iteration
-        % for the next mode this behavior is already fixed and should be
-        % reflected in all the parameters for this mode. Especially when
-        % computing the global E_CSR we need to have to up-to-date
-        % weights."
-        % QUESTION: YES OR NO?
-        % PSEUDO ALGORITHM IN PAPER WOULD SUGGEST NO.
-        % let's say NO for now
-        
-        % OPTION (1)
-        %obj.gamma_train(k,:) = obj.computeGamma(k,obj.var_train,obj.x_train,obj.y_train);
-        %obj.gamma_val(k,:) = obj.computeGamma(k,obj.var_val,obj.x_val,obj.y_val);
-        %obj.gamma_test(k,:) = obj.computeGamma(k,obj.var_test, obj.x_test,obj.y_test);
         % set variance for each behavior - sigma^2_k (Equation 5)
-        %obj.var_train(k) = obj.computeVar(k,gp,i_best,'train'); % on training set!!
-        %obj.var_test(k)  = obj.computeVar(k,gp,i_best,'test');
-        %obj.var_val(k)   = obj.computeVar(k,gp,i_best,'val');
-        
-        % OPTION (1).(b)
-        % reverse the order of (1).
-        
-        % OPTION (2)
-        % set variance for each behavior - sigma^2_k (Equation 5)
-        %obj.var_train(k) = varhat_k{i_best}.train;
-        %obj.var_test(k)  = varhat_k{i_best}.test;
-        %obj.var_val(k)   = varhat_k{i_best}.val;
-        
-        % OPTION (3)
-        % set variance for each behavior - sigma^2_k (Equation 5)
-        obj.var_train(k) = obj.computeVar(k,gp,i_best,'train'); % on training set!!
-        obj.var_test(k)  = obj.computeVar(k,gp,i_best,'test');
-        obj.var_val(k)   = obj.computeVar(k,gp,i_best,'val');
-        % right now I believe it's this update but I cannnot decide
-        % between the three. 
-        
+        obj.var_train(k) = obj.computeVar(k,'train'); % on training set!!
+        obj.var_test(k)  = obj.computeVar(k,'test');
+        obj.var_val(k)   = obj.computeVar(k,'val');
         % #####################
         
     end
     
     % Convergence occurs when global error produces less than 2% change for the
     % last 5 iterations
-    % ecsr = 
+    ecsr = obj.absError(obj.ypred_val,obj.y_val,obj.gamma_val);
+    relative = 1 - ecsr/last_ecsr;
+    last_ecsr = ecsr;
+    
+    if relative > 0.02
+        lastImprovement = 0;
+    else 
+        lastImprovement = lastImprovement + 1;
+    end
+    
+    if lastImprovement > 4 || ecsr < 1e-10
+        notConverged = false;
+    end
+    
+    
+    disp('CURRENT METRICS:')
+    disp(['Lowest error: ' num2str(ecsr) ', last Improvement: ', num2str(lastImprovement)]);
+    disp('Current functions: ');
+    disp(obj.f{1});
+    disp(obj.f{2});
+    disp(['Converged? --> ',num2str(~notConverged)]);
     
 end
 
