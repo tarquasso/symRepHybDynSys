@@ -27,16 +27,12 @@ for k = 1:obj.K
     gp = obj.symReg(); % returns pareto set
     
     % check out best solution
-    pop = size(index_pareto,1);
-    aic = zeros(pop,1);
-    aic(index_pareto == 0) = Inf; %can't be a solution
-        for i = 1:pop
-            if index_pareto(i) == 0 
-                continue; %skip it, see above
-            end
+    par_size = size(obj.pareto_fit,1);
+    aic = zeros(par_size,1);
+    for i = 1:par_size
             aic(i) = obj.computeLocalAIC(gp,i,k); %for all with index = 1, compute AIC
-        end
-    
+    end
+        
     % set behavior f_k to solution with lowest local AIC score in sr_solutions
     [~,i_best] = min(aic); % only need index of aic vector
     obj.fUpdate(k,gp,i_best); % take the best and format into symbolic eq
@@ -72,17 +68,12 @@ while notConverged % TODO: add convergence criterion
         gp = obj.symReg(); % returns pareto set
         
         % for each solution in sr_solutions :
-        pop = size(index_pareto,1);
-        aic = zeros(pop,1);
-        aic(index_pareto == 0) = Inf; %for all solutions with 0 in index_pareto, set aic to infinity
-        for i = 1:pop
-            if index_pareto(i) == 0
-                continue;
-            end
-
-            % compute AIC score using global fitness (Equation 8)
+        par_size = size(obj.pareto_fit,1);
+        aic = zeros(par_size,1);
+        for i = 1:par_size
+            % compute AIC score using transition fitness (Equation 18)
             aic(i) = obj.computeAIC(gp,i,k);
-        end        
+        end
         
         % set behavior f_k to solution with lowest AIC score in sr_solution
         [~,i_best] = min(aic);
@@ -108,7 +99,7 @@ while notConverged % TODO: add convergence criterion
         lastImprovement = lastImprovement + 1;
     end
     
-    if lastImprovement > 5
+    if lastImprovement > 4
         break;
     end
     

@@ -23,6 +23,7 @@ if strcmpi(x,'train') || isequal(x,obj.x_train)
     return;
 end
 
-assert(false,'Use x = {train,test,val');
+warning('Use x = {train,test,val}');
+yhat = [];
 
 end
