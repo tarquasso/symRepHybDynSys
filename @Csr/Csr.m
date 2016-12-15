@@ -44,7 +44,7 @@ classdef (Sealed) Csr < handle
         ecsr_k = kQuadError(obj,ypred,yactual,weights);
         ecsr = absError(obj,ypred,yactual,weights);
         vark = computeVar(obj,k,gp,i,set,gamma);
-        yhat = predictData(obj,k,x);
+        ypred = predictData(predictor,x,index);
         yhat = fullPrediction(obj,x); % predict data according to mixture model
         yhat = maxPrediction(obj,x); % predict data according to most likely membership
         gamma = computeGamma(obj,k,var,x,y);
