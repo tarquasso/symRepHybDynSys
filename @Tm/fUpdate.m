@@ -9,4 +9,8 @@ obj.ypred_val(:,k,ksub)   = obj.predictDataTM(evalstr,gp.userdata.xval);
 % Our own version of gppretty to get symbolic, simplified equation out of it
 obj.f{k,ksub} = obj.tmPretty(gp,obj.pareto_fstr{i_best});
 
+obj.pareto_fstr_all{k,k_sub} = obj.pareto_fstr;
+obj.pareto_complex_all{k,k_sub} = obj.pareto_complex;
+obj.pareto_fit_all{k,k_sub} = obj.pareto_fit;
+
 end

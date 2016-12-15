@@ -19,6 +19,10 @@ obj.pareto_fstr = [];
 obj.pareto_complex = [];
 obj.pareto_fit = [];
 
+obj.pareto_fstr_all = cell(obj.K,obj.K);
+obj.pareto_complex_all = cell(obj.K,obj.K);
+obj.pareto_fit_all = cell(obj.K,obj.K);
+
 obj.f = cell(obj.K,obj.K); %transition functions KxK, diagonal terms do not matter
 
 n_train = length(obj.x_train);
