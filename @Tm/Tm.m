@@ -82,6 +82,10 @@ classdef (Sealed) Tm < handle
         pareto_complex;
         pareto_fstr;
         
+        pareto_fit_all;
+        pareto_complex_all;
+        pareto_fstr_all;
+        
         runningTM;
         initiated;
     end
