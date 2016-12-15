@@ -1,22 +1,22 @@
-function vark = computeVar(obj,k,gp,i,set,gamma)
+function vark = computeVar(obj,k,set,gamma)
 % compute var for one mode  k.
 
 if strcmpi(set,'val')
     
     weightsk = obj.getWeightsVal(k);
-    ypred = obj.predictData(gp,obj.x_val,i);
+    ypred = obj.getAllPredictions('val',k);
     yactual = obj.y_val;
     
 elseif strcmpi(set,'test')
     
     weightsk = obj.getWeightsTest(k);
-    ypred = obj.predictData(gp,obj.x_test,i);
+    ypred = obj.getAllPredictions('test',k);
     yactual = obj.y_test;
     
 else % compute variance for training set 
     
     weightsk = obj.getWeightsTrain(k);
-    ypred = obj.predictData(gp,obj.x_train,i);
+    ypred = obj.getAllPredictions('train',k);
     yactual = obj.y_train;
     
 end
