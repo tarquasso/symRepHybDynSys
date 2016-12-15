@@ -31,5 +31,9 @@ end
 ecsr_k = obj.kQuadError(ypred,yactual,weightsk); % last part of the equation
 vark = ( sum(weightsk)/(sum(weightsk).^2 - sum(weightsk.^2)) ) * ecsr_k;
 
+if vark < 1e-5 || isnan(vark)
+    vark = 1e-5;
+end
+
 end
 

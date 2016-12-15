@@ -1,8 +1,8 @@
-function ypred = getAllPredictions(x,k)
+function ypred = getAllPredictions(obj,x,k)
 
 % y = n x k
 
-if nargin < 2
+if nargin < 3
     k = ':';
 end
 

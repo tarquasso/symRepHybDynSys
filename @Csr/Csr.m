@@ -54,7 +54,7 @@ classdef (Sealed) Csr < handle
         gammak = computeGamma(obj,k,var,x,y);
         gammak = computeGammaHat(obj,k,var,x,y,yhatk);
         
-        ypred = getAllPredictions(x,k);
+        ypred = getAllPredictions(obj,x,k);
         
         [] = fUpdate(obj,k,gp,i_best);
     end
