@@ -4,22 +4,19 @@ function vark = computeVar(obj,k,gp,i,set,gamma)
 if strcmpi(set,'val')
     
     weightsk = obj.getWeightsVal(k);
-    gpmodel = gpmodel2struct(gp,i);
-    ypred = gpmodel.val.ypred;
+    ypred = obj.predictData(gp,obj.x_val,i);
     yactual = obj.y_val;
     
 elseif strcmpi(set,'test')
     
     weightsk = obj.getWeightsTest(k);
-    gpmodel = gpmodel2struct(gp,i);
-    ypred = gpmodel.test.ypred;
+    ypred = obj.predictData(gp,obj.x_test,i);
     yactual = obj.y_test;
     
 else % compute variance for training set 
     
     weightsk = obj.getWeightsTrain(k);
-    gpmodel = gpmodel2struct(gp,i);
-    ypred = gpmodel.train.ypred;
+    ypred = obj.predictData(gp,obj.x_train,i);
     yactual = obj.y_train;
     
 end
