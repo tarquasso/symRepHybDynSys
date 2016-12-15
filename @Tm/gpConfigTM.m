@@ -49,8 +49,8 @@ function gp = gpConfigTM(obj,gp)
     end
     
     % tree information (make it possibly deeper since we only have one tree)
-    gp.treedef.max_depth = 5;
-    gp.treedef.max_mutate_depth = 5;
+    gp.treedef.max_depth = 3;
+    gp.treedef.max_mutate_depth = 3;
     
     %genetic operators
     gp.operators.mutation.p_mutate = 0.03;    
@@ -58,7 +58,7 @@ function gp = gpConfigTM(obj,gp)
     gp.operators.directrepro.p_direct = 1-gp.operators.mutation.p_mutate-gp.operators.crossover.p_cross; 
     
     % function nodes
-    gp.nodes.functions.name = {'times','minus','plus','rdivide'};
+    gp.nodes.functions.name = {'times','minus','plus'};
     %gp.nodes.functions.name = {'times','minus','plus','rdivide','square',...
     %    'mult3','add3','sqrt','cube','neg'};
     
