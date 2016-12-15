@@ -37,17 +37,23 @@ classdef (Sealed) Csr < handle
     
     methods (Access = private)
         gp = symReg(obj)
+        
         aic = computeLocalAIC(obj,gp,index,k)
         aic = computeAIC(obj,gp,index,k)
+        
         ecsr_k = kAbsError(obj,ypred,yactual,weights);
         ecsr_k = kQuadError(obj,ypred,yactual,weights);
+        
         ecsr = absError(obj,ypred,yactual,weights);
+        
         vark = computeVar(obj,k,gp,i,set,gamma);
-        ypred = predictData(predictor,x,index);
+
         yhat = fullPrediction(obj,x); % predict data according to mixture model
         yhat = maxPrediction(obj,x); % predict data according to most likely membership
+        
         gamma = computeGamma(obj,k,var,x,y);
         gamma = computeGammaHat(obj,k,var,x,y,yhatk);
+        
         [] = fUpdate(obj,k,gp,i_best);
     end
     
@@ -86,8 +92,9 @@ classdef (Sealed) Csr < handle
     methods (Static)
         [fitness,gp] = csrFitfun(evalstr,gp);
         fitness = computeFitness(weights,y,ypred);
-        [valfitness,gp,ypredval] = csrSelectPareto(gp)
-        exprSym = csrPretty(gp,fstr)
+        [valfitness,gp,ypredval] = csrSelectPareto(gp);
+        exprSym = csrPretty(gp,fstr);
+        ypred = predictData(predictor,x,index);
     end
 end
 
