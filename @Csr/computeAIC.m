@@ -1,21 +1,20 @@
 function aic = computeAIC(obj,gp,index,k)
 
-% compute temporary membership values - gammahat_kn (Equation 4)
-gpmodel = gpmodel2struct(gp,index);
-yhatk = gpmodel.val.ypred;
+yactual = obj.y_val;
+yhatk = obj.predictData(gp,obj.x_val,index);
 
 % for one candidate for the new pareto set
-gammahat = obj.computeGammaHat(k,obj.var_val,obj.x_val,obj.y_val,yhatk);
+gammahatk = obj.computeGammaHat(k,obj.var_val,obj.x_val,yactual,yhatk);
 
 % compute global fitness using temporary values - E_csr (Equation 2)
 yhat = obj.predictData('all','val');
 weights = obj.getWeightsVal('all');
-weights(k,:) = gammahat;
+weights(k,:) = gammahatk;
 yhat(:,k) = yhatk;
 ecsr = obj.absError(yhat,yactual,weights);
 
 c = gp.fitness.nodecount(index);
-N = size(obj.y_val,1);
+N = size(yactual,1);
 
 %global AIC
 aic = 2*c + N*log(ecsr);
