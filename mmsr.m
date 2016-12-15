@@ -23,13 +23,13 @@ modeTrain = dataTrain.mode; % 1 is in the air, 2 is in contact
 
 NVal = length(dataVal.zAll);
 xVal = [dataVal.zAll,dataVal.zdAll];
-yVal = dataTrain.zddAll;
-modeVal = dataTrain.mode; % 1 is in the air, 2 is in contact
+yVal = dataVal.zddAll;
+modeVal = dataVal.mode; % 1 is in the air, 2 is in contact
 
 NTest = length(dataTest.zAll);
 xTest = [dataTest.zAll,dataTest.zdAll];
-yTest = dataTrain.zddAll;
-modeTest = dataTrain.mode; % 1 is in the air, 2 is in contact
+yTest = dataTest.zddAll;
+modeTest = dataTest.mode; % 1 is in the air, 2 is in contact
 
 else
   
