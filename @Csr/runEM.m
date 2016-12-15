@@ -49,7 +49,7 @@ last_ecsr = realmax;
 lastImprovement = 0;
 notConverged = true;
 % while convergence is not achieved :
-while notConverged % TODO: add convergence criterion
+while notConverged 
     
     % for each behavior in K modes :
     for k = 1:obj.K
@@ -90,8 +90,8 @@ while notConverged % TODO: add convergence criterion
     % Convergence occurs when global error produces less than 2% change for the
     % last 5 iterations
     ecsr = obj.absError(obj.ypred_val,obj.y_val,obj.gamma_val);
-    
     relative = 1 - ecsr/last_ecsr;
+    last_ecsr = ecsr;
     
     if relative > 0.02
         lastImprovement = 0;
@@ -100,7 +100,7 @@ while notConverged % TODO: add convergence criterion
     end
     
     if lastImprovement > 4
-        break;
+        notConverged = false;
     end
     
 end
