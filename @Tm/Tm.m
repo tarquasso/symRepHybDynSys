@@ -46,7 +46,7 @@ classdef (Sealed) Tm < handle
         [] = fUpdate(obj,k,ksub,gp,i_best);
     end
     
-    properties (Access = private)
+    properties (Access = public)
         % Weight Balance
         ptp_train;
         ptp_val;
@@ -81,9 +81,10 @@ classdef (Sealed) Tm < handle
         pareto_fit;
         pareto_complex;
         pareto_fstr;
-        
+
         runningTM;
         initiated;
+
     end
     
     methods (Static)

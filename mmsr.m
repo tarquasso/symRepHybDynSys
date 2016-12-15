@@ -10,22 +10,33 @@ t.TimeZone = 'America/New_York';
 
 %% Data Parsing
 
-if(false)
+if(true)
 %% Rubber Data Case
 [dataTrain,dataVal,dataTest] = loadSoftRubberData();
 
 K = 2;
 % dataTrain.tAll
+NTrain = length(dataTrain.zAll);
 xTrain = [dataTrain.zAll,dataTrain.zdAll];
 yTrain = dataTrain.zddAll;
-mTrain = dataTrain.mode; % 1 is in the air, 2 is in contact
+modeTrain = dataTrain.mode; % 1 is in the air, 2 is in contact
+
+NVal = length(dataVal.zAll);
+xVal = [dataVal.zAll,dataVal.zdAll];
+yVal = dataTrain.zddAll;
+modeVal = dataTrain.mode; % 1 is in the air, 2 is in contact
+
+NTest = length(dataTest.zAll);
+xTest = [dataTest.zAll,dataTest.zdAll];
+yTest = dataTrain.zddAll;
+modeTest = dataTrain.mode; % 1 is in the air, 2 is in contact
 
 else
   
 %% Synthetic Data Case
-[dataTrain,dataVal,dataTest] = loadHysteresisRelayData();
+%[dataTrain,dataVal,dataTest] = loadHysteresisRelayData();
 % [dataTrain,dataVal,dataTest] = loadHysteresisRelayShortData();
-% [dataTrain,dataVal,dataTest] = loadContinuousHysteresisLoopData();
+[dataTrain,dataVal,dataTest] = loadContinuousHysteresisLoopData();
 
 NTrain = length(dataTrain.u);
 K = dataTrain.K; %2
@@ -88,15 +99,15 @@ gammaTest((modeTest == 2),2) = 1;
 end
 
 figure(1); clf;
-plot(1:NTrain,gammaTrain,'-..')
+plot(1:NTrain,gammaTrain(:,1),'-..')
 title('Gama Train')
 
 figure(2); clf;
-plot(1:NVal,gammaVal,'-..')
+plot(1:NVal,gammaVal(:,1),'-..')
 title('Gama Validation')
 
 figure(3); clf;
-plot(1:NTest,gammaTest,'-..')
+plot(1:NTest,gammaTest(:,1),'-..')
 title('Gama Test')
 
 %% Set up Init File
