@@ -32,6 +32,8 @@ classdef (Sealed) Csr < handle
         gamma = getAllWeightsTest(obj);
         gamma = getAllWeightsVal(obj);
         gp = gpConfig(obj,gp) %move to private methods?
+        
+        [valfitness,gp,ypredval] = updateParetoSet(obj,gp);
     end
     
     methods (Access = private)
@@ -74,14 +76,18 @@ classdef (Sealed) Csr < handle
         var_test;
         var_val;
         
+        pareto_fstr;
+        pareto_fit;
+        pareto_complex;
+        
         runningEM;
         initiated;
     end
     
     methods (Static)
         [fitness,gp] = csrFitfun(evalstr,gp);
-        [valfitness,gp,ypredval] = csrFitfunValidate(gp);
         fitness = computeFitness(weights,y,ypred);
+        [valfitness,gp,ypredval] = csrSelectPareto(gp)
     end
 end
 

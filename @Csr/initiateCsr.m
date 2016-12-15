@@ -35,6 +35,10 @@ obj.ypred_train = zeros(n_train,obj.K);
 obj.ypred_test = zeros(n_test,obj.K);
 obj.ypred_val = zeros(n_val,obj.K);
 
+obj.pareto_fstr = [];
+obj.pareto_fit = [];
+obj.pareto_complex = [];
+
 obj.runningEM = false;
 obj.initiated = true;
 
